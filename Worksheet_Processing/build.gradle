@@ -12,4 +12,4 @@ dependencies {
    	testCompile 'junit:junit:4.12'         // JUnit dependency for testing
 }
 
-mainClassName = 'ScheduleVerifier'  
+mainClassName = 'Application'  
