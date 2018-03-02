@@ -66,7 +66,7 @@ set CMD_LINE_ARGS=%*
 set CLASSPATH=%APP_HOME%\lib\Worksheet_Processing.jar;%APP_HOME%\lib\poi-3.17.jar;%APP_HOME%\lib\poi-ooxml-3.17.jar;%APP_HOME%\lib\commons-codec-1.10.jar;%APP_HOME%\lib\commons-collections4-4.1.jar;%APP_HOME%\lib\poi-ooxml-schemas-3.17.jar;%APP_HOME%\lib\curvesapi-1.04.jar;%APP_HOME%\lib\xmlbeans-2.6.0.jar;%APP_HOME%\lib\stax-api-1.0.1.jar
 
 @rem Execute Worksheet_Processing
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %WORKSHEET_PROCESSING_OPTS%  -classpath "%CLASSPATH%" ScheduleVerifier %CMD_LINE_ARGS%
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %WORKSHEET_PROCESSING_OPTS%  -classpath "%CLASSPATH%" ReadWorkbook %CMD_LINE_ARGS%
 
 :end
 @rem End local scope for the variables with windows NT shell
