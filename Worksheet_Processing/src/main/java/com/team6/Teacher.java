@@ -6,6 +6,7 @@ public class Teacher {
 	private String initials;
 	private ArrayList<String> schedule;
 	private int onCallsTotal;
+	private int onCallsWeek;
 	private String skill;
 	private final String[] periods = {"1","2","3A","3B","4"};
 	
@@ -13,6 +14,15 @@ public class Teacher {
 		initials = initialsIn;
 		schedule = scheduleIn;
 		onCallsTotal = 0;
+	}
+	
+	public Teacher(String initialsIn) {
+		initials = initialsIn;
+		onCallsTotal = 0;
+	}
+	
+	public String getInitials() {
+		return initials;
 	}
 	
 	public void setSkill(String skillIn) {
