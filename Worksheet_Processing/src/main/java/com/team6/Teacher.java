@@ -33,12 +33,18 @@ public class Teacher {
 		onCallsTotal = num;
 	}
 	
+	public void setOnCallsWeek(int num) {
+		onCallsWeek = num;
+	}
+	
 	public String toString(){
 		String s = "Teacher: " + initials + "\n";
+		/*
 		for (int i = 0; i < 5; i++) {
 			s += "Period " + periods[i] + ": " + schedule.get(i) + "\n";
-		}
+		}*/
 		s += "Total On Calls: " + onCallsTotal + "\n";
+		s += "Weekly On Calls: " + onCallsWeek + "\n";
 		
 		return s;
 		
