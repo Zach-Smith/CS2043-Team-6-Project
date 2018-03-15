@@ -93,15 +93,15 @@ public class ScheduleProcessor {
 		  
 	  }
 	  
-	  public ArrayList<Teacher> generateTeachers(){
+	  public ArrayList<Teacher> generateTeachers() throws InvalidFormatException, IOException{
 		  ArrayList<ArrayList<String>> arr = this.convertSpreadsheet();
 		  ArrayList<Teacher> teachers = new ArrayList<Teacher>();
 		  
 		  for (int i = 1; i < arr.size(); i++) {
 			  String initials = arr.get(i).get(0);
-			  ArrayList<String> schedule = new ArrayList<String>();
+			  ArrayList<Course> schedule = new ArrayList<Course>();
 			  for (int j = 1; j < 6; j++) {
-				  schedule.add(arr.get(i).get(j));
+				  schedule.add(new Course(initials,arr.get(0).get(j), arr.get(i).get(j)));
 			  }
 			  
 			  teachers.add(new Teacher(initials,schedule));
@@ -111,5 +111,4 @@ public class ScheduleProcessor {
 		  return teachers;
 		  
 	  }
-
 }
