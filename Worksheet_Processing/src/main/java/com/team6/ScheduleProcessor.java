@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 public class ScheduleProcessor {
 	
-	  public static final String XLSX_FILE_PATH = "./Teacher_Schedule_Example.xlsx"; 	
+	  public static final String XLSX_FILE_PATH = "./Workbook-Term2017-2018W.xlsx"; 	
 	  private Workbook workbook;
 	  private Sheet scheduleSheet;
 	  

@@ -45,9 +45,10 @@ public class AbsencesProcessor {
 		 return arr;
 	 }
 	 	
-	 public ArrayList<Course> findAbsences(ArrayList<Teacher> teachers) throws InvalidFormatException, IOException{
+	 public ArrayList<ArrayList<Course>> findAbsences(ArrayList<Teacher> teachers) throws InvalidFormatException, IOException{
 			 ArrayList<ArrayList<String>> arr = this.readAbsences();
 			 ArrayList<Course> courses = new ArrayList<Course>();
+			 ArrayList<ArrayList<Course>> weekly = new ArrayList<ArrayList<Course>>();
 			  
 			 for(int i = 3; !arr.get(i).get(0).equals("a"); i++) {
 				 String initials = arr.get(i).get(0);
@@ -57,7 +58,7 @@ public class AbsencesProcessor {
 						 break;
 				  }	
 				 int scheduleIndex = 0;
-				 for(int j = 2; j < 27; j++) {
+				 for(int j = 2; j < 7; j++) {
 					 if(arr.get(i).get(j).equals("a")) {
 						 courses.add(teachers.get(index).schedule.get(scheduleIndex));
 					 }	
@@ -67,7 +68,88 @@ public class AbsencesProcessor {
 					 }
 				 }
 			 }
-			 return courses;
+			 weekly.add(courses);
+			 courses = new ArrayList<Course>();
+			 for(int i = 3; !arr.get(i).get(0).equals("a"); i++) {
+				 String initials = arr.get(i).get(0);
+				 int index;
+				 for(index = 0;index < teachers.size(); index++) {
+					 if(initials.equals(teachers.get(index).initials))
+						 break;
+				  }	
+				 int scheduleIndex = 0;
+				 for(int j = 7; j < 12; j++) {
+					 if(arr.get(i).get(j).equals("a")) {
+						 courses.add(teachers.get(index).schedule.get(scheduleIndex));
+					 }	
+					 scheduleIndex++;
+					 if(scheduleIndex == 5) {
+						 scheduleIndex = 0;
+					 }
+				 }
+			 }
+			 weekly.add(courses);
+			 courses = new ArrayList<Course>();
+			 for(int i = 3; !arr.get(i).get(0).equals("a"); i++) {
+				 String initials = arr.get(i).get(0);
+				 int index;
+				 for(index = 0;index < teachers.size(); index++) {
+					 if(initials.equals(teachers.get(index).initials))
+						 break;
+				  }	
+				 int scheduleIndex = 0;
+				 for(int j = 12; j < 17; j++) {
+					 if(arr.get(i).get(j).equals("a")) {
+						 courses.add(teachers.get(index).schedule.get(scheduleIndex));
+					 }	
+					 scheduleIndex++;
+					 if(scheduleIndex == 5) {
+						 scheduleIndex = 0;
+					 }
+				 }
+			 }
+			 weekly.add(courses);
+			 courses = new ArrayList<Course>();
+			 for(int i = 3; !arr.get(i).get(0).equals("a"); i++) {
+				 String initials = arr.get(i).get(0);
+				 int index;
+				 for(index = 0;index < teachers.size(); index++) {
+					 if(initials.equals(teachers.get(index).initials))
+						 break;
+				  }	
+				 int scheduleIndex = 0;
+				 for(int j = 17; j < 22; j++) {
+					 if(arr.get(i).get(j).equals("a")) {
+						 courses.add(teachers.get(index).schedule.get(scheduleIndex));
+					 }	
+					 scheduleIndex++;
+					 if(scheduleIndex == 5) {
+						 scheduleIndex = 0;
+					 }
+				 }
+			 }
+			 weekly.add(courses);
+			 courses = new ArrayList<Course>();
+			 for(int i = 3; !arr.get(i).get(0).equals("a"); i++) {
+				 String initials = arr.get(i).get(0);
+				 int index;
+				 for(index = 0;index < teachers.size(); index++) {
+					 if(initials.equals(teachers.get(index).initials))
+						 break;
+				  }	
+				 int scheduleIndex = 0;
+				 for(int j = 22; j < 27; j++) {
+					 if(arr.get(i).get(j).equals("a")) {
+						 courses.add(teachers.get(index).schedule.get(scheduleIndex));
+					 }	
+					 scheduleIndex++;
+					 if(scheduleIndex == 5) {
+						 scheduleIndex = 0;
+					 }
+				 }
+			 }
+			 weekly.add(courses);
+			 return weekly;
 	 }
 }
 
