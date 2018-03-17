@@ -3,10 +3,12 @@ package com.team6;
 import java.util.ArrayList;
 
 public class Teacher {
-	public final String initials;
+
+	public String initials;
 	public ArrayList<Course> schedule;
-	private int onCallsTotal, onCallsWeekly;
-	private String skill;
+	public int onCallsTotal;
+	public int onCallsWeekly;
+	public String skill;
 	
 	public Teacher(String initialsIn, ArrayList<Course> scheduleIn) {
 		initials = initialsIn;
@@ -15,12 +17,33 @@ public class Teacher {
 		onCallsTotal = 0;
 	}
 	
+	public Teacher(String initialsIn) {
+		initials = initialsIn;
+		onCallsTotal = 0;
+	}
+	
+	public String getInitials() {
+		return initials;
+	}
+	
 	public void setSkill(String skillIn) {
 		skill = skillIn;		
 	}
 	
 	public void setTotalOnCalls(int num) {
 		onCallsTotal = num;
+	}
+	
+	public void setOnCallsWeek(int num) {
+		onCallsWeekly = num;
+	}
+	
+	public void increaseTotalOnCalls(int num) {
+		onCallsTotal += num;
+	}
+	
+	public void increaseWeeklyOnCalls(int num) {
+		onCallsWeekly += num;
 	}
 	
 	public String toString(){

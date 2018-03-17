@@ -45,7 +45,8 @@ public class AbsencesProcessor {
 		 return arr;
 	 }
 	 	
-	 public ArrayList<Course> findAbsences(ArrayList<Teacher> teachers) throws InvalidFormatException, IOException{
+	 //dayOfWeek ranges from 0 (Monday) to 4 (Friday)
+	 public ArrayList<Course> findAbsencesForOneDay(ArrayList<Teacher> teachers, int dayOfWeek) throws InvalidFormatException, IOException{
 			 ArrayList<ArrayList<String>> arr = this.readAbsences();
 			 ArrayList<Course> courses = new ArrayList<Course>();
 			  
@@ -56,19 +57,19 @@ public class AbsencesProcessor {
 					 if(initials.equals(teachers.get(index).initials))
 						 break;
 				  }	
-				 int scheduleIndex = 0;
-				 for(int j = 2; j < 27; j++) {
+				
+				 int scheduleIndex = 0;	
+				 for(int j = 2 + dayOfWeek * 5; j < 2 + dayOfWeek *5 + 5 ; j++) {
 					 if(arr.get(i).get(j).equals("a")) {
 						 courses.add(teachers.get(index).schedule.get(scheduleIndex));
 					 }	
 					 scheduleIndex++;
-					 if(scheduleIndex == 5) {
-						 scheduleIndex = 0;
-					 }
+					 
 				 }
 			 }
 			 return courses;
 	 }
+	
 }
 
 

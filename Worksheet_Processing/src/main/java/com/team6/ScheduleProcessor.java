@@ -101,7 +101,7 @@ public class ScheduleProcessor {
 			  String initials = arr.get(i).get(0);
 			  ArrayList<Course> schedule = new ArrayList<Course>();
 			  for (int j = 1; j < 6; j++) {
-				  schedule.add(new Course(initials,arr.get(0).get(j), arr.get(i).get(j)));
+				  schedule.add(new Course(initials,arr.get(0).get(j),arr.get(i).get(j)));
 			  }
 			  
 			  teachers.add(new Teacher(initials,schedule));
