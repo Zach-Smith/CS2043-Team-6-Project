@@ -3,17 +3,25 @@ package com.team6;
 import java.util.ArrayList;
 
 public class Teacher {
-	private String initials;
-	private ArrayList<String> schedule;
-	private int onCallsTotal;
-	private int onCallsWeek;
-	private String skill;
-	private final String[] periods = {"1","2","3A","3B","4"};
+
+	public String initials;
+	public ArrayList<Course> schedule;
+	public int onCallsTotal;
+	public int onCallsWeekly;
+	public String skill;
 	
-	public Teacher(String initialsIn, ArrayList<String> scheduleIn) {
+	public Teacher(String initialsIn, ArrayList<Course> scheduleIn) {
 		initials = initialsIn;
 		schedule = scheduleIn;
+		onCallsWeekly = 0;
 		onCallsTotal = 0;
+	}
+	
+	public Teacher(String initialsIn, int weeklyOnCall, int totalOnCall) {
+		initials = initialsIn;
+		schedule = null;
+		onCallsWeekly = weeklyOnCall;
+		onCallsTotal = totalOnCall;
 	}
 	
 	public Teacher(String initialsIn) {
@@ -34,17 +42,23 @@ public class Teacher {
 	}
 	
 	public void setOnCallsWeek(int num) {
-		onCallsWeek = num;
+		onCallsWeekly = num;
+	}
+	
+	public void increaseTotalOnCalls(int num) {
+		onCallsTotal += num;
+	}
+	
+	public void increaseWeeklyOnCalls(int num) {
+		onCallsWeekly += num;
 	}
 	
 	public String toString(){
 		String s = "Teacher: " + initials + "\n";
-		/*
 		for (int i = 0; i < 5; i++) {
-			s += "Period " + periods[i] + ": " + schedule.get(i) + "\n";
-		}*/
+			//s += schedule.get(i) + "\n";
+		}
 		s += "Total On Calls: " + onCallsTotal + "\n";
-		s += "Weekly On Calls: " + onCallsWeek + "\n";
 		
 		return s;
 		
