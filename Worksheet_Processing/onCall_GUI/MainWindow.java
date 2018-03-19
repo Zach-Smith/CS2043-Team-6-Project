@@ -3,36 +3,21 @@ package onCall_GUI;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.SpringLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
 public class MainWindow extends JFrame{
-	
-	String[] headersOnCalls = {"Period", "Substitution", "Class", "On-Calls this week", "On-Calls this month"};
-	String[] headersNextOnCallers = {"Period","","Teacher", "On-Calls this week", "On-Calls this month", "On-Calls left this Week", "On-Calls left this Month"};
+	String[] headersOnCalls = {"","Teacher", "Periode", "Class", "On-Calls this week", "On-Calls this month"};
+	String[] headersNextOnCallers = {"","Teacher", "On-Calls this week", "On-Calls this month", "On-Calls left this Week", "On-Calls left this Month"};
 	
 	public MainWindow() {
 		
@@ -162,11 +147,11 @@ public class MainWindow extends JFrame{
 				courses.add(new Course(2,"Sport"));
 				courses.add(new Course(2,"Music"));
 				onCalls= new ArrayList<OnCall>(); 
-				onCalls.add(new OnCall(teachers.get(0),courses.get(0),new Teacher("MISS", 1, 2)));
-				onCalls.add(new OnCall(teachers.get(1),courses.get(1),new Teacher("MISS", 1, 2)));
-				onCalls.add(new OnCall(teachers.get(2),courses.get(2),new Teacher("MISS", 1, 2)));
-				onCalls.add(new OnCall(teachers.get(3),courses.get(3),new Teacher("MISS", 1, 2)));
-				onCalls.add(new OnCall(teachers.get(4),courses.get(4),new Teacher("MISS", 1, 2)));
+				onCalls.add(new OnCall(teachers.get(0),courses.get(0)));
+				onCalls.add(new OnCall(teachers.get(1),courses.get(1)));
+				onCalls.add(new OnCall(teachers.get(2),courses.get(2)));
+				onCalls.add(new OnCall(teachers.get(3),courses.get(3)));
+				onCalls.add(new OnCall(teachers.get(4),courses.get(4)));
 				maxOnCallsPerWeek = 2;
 				maxOnCallsPerMonth = 5;
 				//simulated input end
@@ -191,12 +176,11 @@ public class MainWindow extends JFrame{
 	
 	private String[][] formatOnCallData(){
 		ArrayList<ArrayList<String>> onCallInformation = new ArrayList<ArrayList<String>>();
-		Collections.sort(onCalls); // sort according to Periods
 		for(int i = 0; i< onCalls.size();i++) {
 			ArrayList<String> outputRow = new ArrayList<String>();
-			//outputRow.add(Integer.toString(i+1));
-			outputRow.add(Integer.toString(onCalls.get(i).course.period));
-			outputRow.add(onCalls.get(i).onCaller.initiales + " " + "in for "+ onCalls.get(i).absentTeacher.initiales );
+			outputRow.add(Integer.toString(i+1));
+			outputRow.add(onCalls.get(i).onCaller.initiales);
+			outputRow.add(Integer.toString(onCalls.get(i).course.periode));
 			outputRow.add(onCalls.get(i).course.courseNumber);
 			outputRow.add(Integer.toString(onCalls.get(i).onCaller.amountOnCallsWeek));
 			outputRow.add(Integer.toString(onCalls.get(i).onCaller.amountOnCallsMonth));
@@ -208,12 +192,9 @@ public class MainWindow extends JFrame{
 	private String[][] formatNextOnCallerData(){
 		ArrayList<ArrayList<String>> onCallInformation = new ArrayList<ArrayList<String>>();
 		ArrayList<Teacher> teachersSorted = sortTeachers();
-		for (int period = 1; period < 6; period++) {
 		for(int i = 0; i< teachers.size(); i++) {
-			//if (!teachers.get(i).assignetToOnCall) { //why?
-			if (teachers.get(i).freeIn(period)) {
+			if (!teachers.get(i).assignetToOnCall) {
 				ArrayList<String> outputRow = new ArrayList<String>();
-				outputRow.add(Integer.toString(period));
 				outputRow.add(Integer.toString(i+1));
 				outputRow.add(teachersSorted.get(i).initiales);
 				outputRow.add(Integer.toString(teachersSorted.get(i).amountOnCallsWeek));
@@ -222,7 +203,6 @@ public class MainWindow extends JFrame{
 				outputRow.add(Integer.toString(maxOnCallsPerMonth - teachersSorted.get(i).amountOnCallsMonth));
 				onCallInformation.add(outputRow);
 			}
-		}
 		}
 		return arryListTo2dArray(onCallInformation);
 	}

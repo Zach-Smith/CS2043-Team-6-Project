@@ -1,14 +1,11 @@
 package onCall_GUI;
 
 public class Course {
-public int period;
+public int periode;
 public String courseNumber;
-public String room; // room is needed for on-call sheets/ printable version
 
-public Course(int period, String courseNumber) { // Implement room number !
-	this.period = period;
+public Course(int periode, String courseNumber) {
+	this.periode = periode;
 	this.courseNumber = courseNumber;
 }
-
-
 }
