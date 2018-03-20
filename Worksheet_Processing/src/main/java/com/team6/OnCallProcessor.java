@@ -56,9 +56,13 @@ public class OnCallProcessor {
 		for (int i = 0; i < absenteeList.size(); i++){
 			for (int j = 0; j < list.size(); j++) {
 				if (absenteeList.get(i).teacher.equals(list.get(j).initials) && absenteeList.get(i).period.equals(period)) {
+						
 						list.remove(j);
+						
 					
 				}
+				
+				
 			}
 			
 		}
@@ -67,11 +71,13 @@ public class OnCallProcessor {
 	
 	public void removeTeachingTeachers(ArrayList<Teacher> list,String period) {
 		int periodIndex = Course.getPeriodIndex(period);
+		
 		if (periodIndex >= 0) {
 			for (int i = 0; i < teachers.size(); i++){
 				for (int j = 0; j < list.size(); j++) {
-					if (teachers.get(i).initials.equals(list.get(j).initials) && !(teachers.get(i).schedule.get(periodIndex).period.equals(""))) {
-							list.remove(j);
+					if (teachers.get(i).initials.equals(list.get(j).initials) && !(teachers.get(i).schedule.get(periodIndex).getCourseNumber().equals("S")) && !(teachers.get(i).schedule.get(periodIndex).getCourseNumber().equals("L"))) {
+							
+						list.remove(j);
 					
 					}
 				}
@@ -94,6 +100,7 @@ public class OnCallProcessor {
 	public boolean generateOnCallList() {
 		for (int i = 0;i < absenteeList.size(); i++) {
 			if(!assignOnCaller(absenteeList.get(i))) {
+				
 				//if(!assignSupply(absenteeList)){
 					return false;
 				//}
@@ -113,13 +120,31 @@ public class OnCallProcessor {
 		
 	}
 	*/
+	
+	public ArrayList<Teacher> CloneTeachers(){
+		ArrayList<Teacher> list = new ArrayList<Teacher>();
+		for(int i = 0; i < teachers.size(); i++) {
+			list.add(teachers.get(i));
+		}
+		
+		return list;
+	}
 																	
 	public boolean assignOnCaller(Course absenteeCourse) {
 		
+		
+		//If absenteeCourse is lunch or spare, no need to cover absence 
+		if (absenteeCourse.getCourseNumber().equals("S") || absenteeCourse.getCourseNumber().equals("L")) {
+			return true;
+		}
+		
 		Teacher absentTeacher = this.getAbsentTeacher(absenteeCourse);
 		Random rand = new Random();
-		ArrayList<Teacher> list = teachers;
 		
+		//Initialize list to be all full time teachers
+		ArrayList<Teacher> list = this.CloneTeachers();
+		
+			
 		//find period of absence
 		String periodOfAbsence = absenteeCourse.period;
 		
@@ -128,27 +153,30 @@ public class OnCallProcessor {
 		this.removeAbsentTeachers(list,periodOfAbsence);
 		this.removeTeachingTeachers(list,periodOfAbsence);
 		this.removeOnCallTeachers(list,periodOfAbsence);
-					
 		
-		int minOnCalls = this.findMinOnCalls(list);
-		ArrayList<Teacher> minOnCallsTeachers = new ArrayList<Teacher>();
 		
-		//Go through teachers starting from those that have minimum total on calls 
-		//and 0 weekly on calls. If such teachers exit, make a list of them, randomly 
-		//choose one from the list, and assign them as on call. If none exist, look 
-		//for teachers with a higher number of total on calls and weekly on calls
-		//If a teacher to assign as on call is found, update on call tally and on call list and return true
-		//If empty list or arrived at max on calls, return false (need a supply teacher).
-		for (int i = minOnCalls; i < MAX_TOTAL_ON_CALLS; i++) {
-			for (int weeklyOnCallsIndex = 0; weeklyOnCallsIndex <= i; weeklyOnCallsIndex++){
-				for (int listIndex = 0; listIndex < list.size(); listIndex++) {
-					if (list.get(listIndex).onCallsTotal == i && list.get(listIndex).onCallsWeekly == weeklyOnCallsIndex) {
-							minOnCallsTeachers.add(list.get(listIndex));
-						
+		
+		if(list.size() > 0) {
+		
+			int minOnCalls = this.findMinOnCalls(list);
+			
+			ArrayList<Teacher> minOnCallsTeachers = new ArrayList<Teacher>();
+		
+			//Go through teachers starting from those that have minimum total on calls 
+			//and 0 weekly on calls. If such teachers exit, make a list of them, randomly 
+			//choose one from the list, and assign them as on call. If none exist, look 
+			//for teachers with a higher number of total on calls and weekly on calls
+			//If a teacher to assign as on call is found, update on call tally and on call list and return true
+			//If empty list or arrived at max on calls, return false (need a supply teacher).
+			for (int i = minOnCalls; i < MAX_TOTAL_ON_CALLS; i++) {
+				for (int weeklyOnCallsIndex = 0; weeklyOnCallsIndex <= i; weeklyOnCallsIndex++){
+					for (int listIndex = 0; listIndex < list.size(); listIndex++) {
+						if (list.get(listIndex).onCallsTotal == i && list.get(listIndex).onCallsWeekly == weeklyOnCallsIndex) {
+								minOnCallsTeachers.add(list.get(listIndex));
+						}
 						
 					}
-					
-					
+									
 				}
 				
 				if (!(minOnCallsTeachers.isEmpty())) {
@@ -176,6 +204,85 @@ public class OnCallProcessor {
 				t.increaseWeeklyOnCalls(1);
 			}
 		}
+		
+	}
+	
+	public void sortOnCalls() {
+		int min;
+		OnCall temp;
+		
+		for (int i = 0; i < onCallList.size() - 1; i++) {
+			min = i;
+			for (int j = i + 1; j < onCallList.size(); j++) {
+				if (onCallList.get(j).compareTo(onCallList.get(min)) < 0){
+					min = j;
+				}
+			}
+			
+			//Swap
+			temp = onCallList.get(min);
+			onCallList.remove(min);
+			onCallList.add(min,onCallList.get(i));
+			onCallList.remove(i);
+			onCallList.add(i,temp);
+		}
+		
+		
+		
+	}
+	
+	
+	public String toString() {
+		this.sortOnCalls();
+		String s = "";
+		int i = 0;
+		
+		s += "Period 1\n";
+		s+= "------------\n\n";
+		
+		while(i < onCallList.size() && onCallList.get(i).getCourse().getPeriod().equals("Period 1")) {
+					
+			s += onCallList.get(i) + "\n\n";
+			i++;
+		}
+		
+		s += "Period 2\n";
+		s+= "------------\n\n";
+		
+		while(i < onCallList.size() && onCallList.get(i).getCourse().getPeriod().equals("Period 2")) {
+					
+			s += onCallList.get(i) + "\n\n";
+			i++;
+		}
+		
+		s += "Period 3A\n";
+		s+= "------------\n\n";
+		
+		while(i < onCallList.size() && onCallList.get(i).getCourse().getPeriod().equals("Period 3A")) {
+					
+			s += onCallList.get(i) + "\n\n";
+			i++;
+		}
+		
+		s += "Period 3B\n";
+		s+= "------------\n\n";
+		
+		while(i < onCallList.size() && onCallList.get(i).getCourse().getPeriod().equals("Period 3B")) {
+					
+			s += onCallList.get(i) + "\n\n";
+			i++;
+		}
+		
+		s += "Period 4\n";
+		s+= "------------\n\n";
+		
+		while(i < onCallList.size() && onCallList.get(i).getCourse().getPeriod().equals("Period 4")) {
+					
+			s += onCallList.get(i) + "\n\n";
+			i++;
+		}
+		
+		return s;
 		
 	}
 	

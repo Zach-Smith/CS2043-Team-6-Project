@@ -26,18 +26,36 @@ public SupplyTeacher supply;
     return Course.getPeriodIndex(course.period) - Course.getPeriodIndex(otherOnCall.course.period) ; // so classes can be sorted by period
   }
 
-  /*
+  public boolean isFullTime() {
+	  if (onCaller != null) {
+		  return true;
+	  }
+	  else {
+		  return false;
+	  }
+  }
+  
+  public Course getCourse() {
+	  return course;
+  }
+  
   public String toString(){
-    String s = course.getPeriod() + "\n\n";
-    s += "Replacement teacher: " + onCaller.getInitials() + "\n";
+	String s = "";
+    s += "Replacement teacher: ";
+    if (this.isFullTime()) {
+    	s += onCaller.getInitials() + "\n";
+    }
+    else {
+    	s += supply.getName() + "\n";
+    }
     s += "Usual teacher: " + absentTeacher.getInitials() + "\n";
     s += "Course: " + course.getCourseNumber() + "\n";
-    s += "School teacher or supply: ";
-    if (supply == true)
-      s += "supply teacher";
+    s += "Full-time teacher or supply: ";
+    if (isFullTime())
+      s += "full-time teacher";
     else
-      s += "school teacher";
+      s += "supply teacher";
     return s;
   }
-  */
+  
 }

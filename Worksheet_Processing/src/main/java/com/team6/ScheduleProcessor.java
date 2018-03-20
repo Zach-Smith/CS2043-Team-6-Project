@@ -8,13 +8,13 @@ import java.util.Iterator;
 
 public class ScheduleProcessor {
 	
-	  public static final String XLSX_FILE_PATH = "./Teacher_Schedule_Example.xlsx"; 	
+	  public static final String XLSX_FILE_PATH = "./Workbook-Term2017-2018W.xlsx"; 	
 	  private Workbook workbook;
 	  private Sheet scheduleSheet;
 	  
 	  public ScheduleProcessor() throws IOException,InvalidFormatException {
 		  workbook = WorkbookFactory.create(new File(XLSX_FILE_PATH));
-		  scheduleSheet = workbook.getSheetAt(0);
+		  scheduleSheet = workbook.getSheetAt(0); //Corresponds to the regular teacher schedule
 		  
 	  }
 	  
@@ -39,7 +39,7 @@ public class ScheduleProcessor {
 	              Cell c = cellIt.next();
 	              String columnHeader = formatter.formatCellValue(c);
 	              
-	              if (headerCount == 0 && columnHeader.equals("Name ")) {
+	              if (headerCount == 0 && columnHeader.equals("Name")) {
 	            	  headerCount++;
 	              }
 	              else if (headerCount == 1 && columnHeader.equals("Period 1")) {
@@ -81,10 +81,13 @@ public class ScheduleProcessor {
 				  
 				  Cell c = cellIt.next();
 				  String val = formatter.formatCellValue(c);
+				  
 				  a.add(val);
 				  
 			  }
-			  
+			  if(a.get(0).equals("")) {
+				  break;
+			  }
 			  arr.add(a);
 					  
 		  }

@@ -34,7 +34,15 @@ public String room; // room is needed for on-call sheets/ printable version
 	}
 	
 	public String toString() {
-		return period + ": " + courseNumber;
+		return "Teacher: " + teacher + ", Period: " + period + ", Course: " + courseNumber;
+	}
+	
+	public String getCourseNumber() {
+		return courseNumber;
+	}
+	
+	public String getPeriod() {
+		return period;
 	}
 
 }
