@@ -48,6 +48,11 @@ public class Application {
 				}
 			}
 			
+			ArrayList<SupplyTeacher> supplies = ap.generateSupplyList();
+			System.out.println("Supplies this week: ");
+			for(int i = 0; i < supplies.size(); i++) {
+				System.out.println(supplies.get(i).getCode() + " : " + supplies.get(i).getName());
+			}
 			
 		}
 		catch(Exception e){
