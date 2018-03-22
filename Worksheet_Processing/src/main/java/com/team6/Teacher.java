@@ -7,6 +7,7 @@ public class Teacher {
 	public String initials;
 	public ArrayList<Course> schedule;
 	public int onCallsTotal;
+	public int onCallsMonthly;
 	public int onCallsWeekly;
 	public String skill;
 	
@@ -37,8 +38,12 @@ public class Teacher {
 		skill = skillIn;		
 	}
 	
-	public void setTotalOnCalls(int num) {
+	public void setOnCallsTotal(int num) {
 		onCallsTotal = num;
+	}
+	
+	public void setOnCallsMonth(int num) {
+		onCallsMonthly = num;
 	}
 	
 	public void setOnCallsWeek(int num) {
@@ -59,6 +64,8 @@ public class Teacher {
 			//s += schedule.get(i) + "\n";
 		}
 		s += "Total On Calls: " + onCallsTotal + "\n";
+		s += "Monthly On Calls: " + onCallsMonthly + "\n";
+		s += "Weekly On Calls: " + onCallsWeekly + "\n";
 		
 		return s;
 		

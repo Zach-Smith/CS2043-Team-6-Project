@@ -6,10 +6,12 @@ public class Application {
 	public static void main(String args[]) {
 		try {
 			ScheduleProcessor sp = new ScheduleProcessor();
-			//ArrayList<ArrayList<String>> onCallTally = ReadWorkBook.readOnCallTally();
+			System.out.println(ReadWorkBook.getSheetByMonth());
+			ArrayList<ArrayList<String>> onCallTally = ReadWorkBook.readOnCallTally(ReadWorkBook.getSheetByMonth());
+			System.out.println(onCallTally.get(2).get(2));
 			//System.out.println(onCallTally.get(7).toString());
 			
-			//ArrayList<Teacher> onCallTeachers = ReadWorkBook.generateTeachersFromOnCall(onCallTally);
+			ArrayList<Teacher> onCallTeachers = ReadWorkBook.generateTeachersFromOnCall(onCallTally);
 			//System.out.println(onCallTeachers.size());
 			//System.out.println(onCallTeachers.get(1).toString());
 			ArrayList<Teacher> teachers = new ArrayList<Teacher>();
@@ -34,9 +36,9 @@ public class Application {
 			onCalls.add(new OnCall(teachers.get(3),courses.get(3),new Teacher("MISS", 1, 2)));
 			onCalls.add(new OnCall(teachers.get(4),courses.get(4),new Teacher("MISS", 1, 2)));
 			
-			for (int i=0; i<=teachers.size()-1; i++)
-				System.out.println(teachers.get(i).toString());
-			DailyRecord record = new DailyRecord(onCalls);
+			for (int i=0; i<=onCallTeachers.size()-1; i++)
+				System.out.println(onCallTeachers.get(i).toString());
+			//DailyRecord record = new DailyRecord(onCalls);
 			
 			for (int i=0; i<=onCalls.size()-1; i++)
 				System.out.println(onCalls.get(i).toString());
