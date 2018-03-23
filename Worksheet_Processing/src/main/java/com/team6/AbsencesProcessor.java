@@ -56,13 +56,13 @@ public class AbsencesProcessor {
 				 String initials = arr.get(i).get(0);
 				 int index;
 				 for(index = 0;index < teachers.size(); index++) {
-					 if(initials.equals(teachers.get(index).initials))
+					 if(initials.equals(teachers.get(index).getInitials()))
 						 break;
 				  }	
 				 int scheduleIndex = 0;
 				 for(int j = indexJ; j < indexJ+5; j++) {
 					 if(arr.get(i).get(j).equals("a")) {
-						 courses.add(teachers.get(index).schedule.get(scheduleIndex));
+						 courses.add(teachers.get(index).getSchedule().get(scheduleIndex));
 					 }	
 					 scheduleIndex++;
 					 if(scheduleIndex == 5) {

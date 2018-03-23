@@ -21,20 +21,15 @@ public class OnCallProcessor {
 		
 	}
 	
-	
-	
-	
 	public void updateOnCallTally(String teacherName,int month,int day,String period) {
 		//To be implemented
-		
-	
 	}
 	
 	public int findMinOnCalls(ArrayList<Teacher> list) {
-		int min = list.get(0).onCallsTotal;
+		int min = list.get(0).getTotalOnCalls();
 		for (int i = 1; i < list.size(); i++) {
-			if (list.get(i).onCallsTotal < min) {
-				min = list.get(i).onCallsTotal;
+			if (list.get(i).getTotalOnCalls() < min) {
+				min = list.get(i).getTotalOnCalls();
 			}
 		}
 		
@@ -43,7 +38,7 @@ public class OnCallProcessor {
 	
 	public Teacher getAbsentTeacher(Course course) {
 		for (int i = 0; i < teachers.size(); i++) {
-			if (course.teacher.equals(teachers.get(i).initials)) {
+			if (course.teacher.equals(teachers.get(i).getInitials())) {
 				return teachers.get(i);
 			}	
 				
@@ -55,16 +50,13 @@ public class OnCallProcessor {
 		
 		for (int i = 0; i < absenteeList.size(); i++){
 			for (int j = 0; j < list.size(); j++) {
-				if (absenteeList.get(i).teacher.equals(list.get(j).initials) && absenteeList.get(i).period.equals(period)) {
+				if (absenteeList.get(i).teacher.equals(list.get(j).getInitials()) && absenteeList.get(i).getPeriod().equals(period)) {
 						
 						list.remove(j);
 						
 					
-				}
-				
-				
-			}
-			
+				}	
+			}	
 		}
 	}
 	
@@ -75,7 +67,7 @@ public class OnCallProcessor {
 		if (periodIndex >= 0) {
 			for (int i = 0; i < teachers.size(); i++){
 				for (int j = 0; j < list.size(); j++) {
-					if (teachers.get(i).initials.equals(list.get(j).initials) && !(teachers.get(i).schedule.get(periodIndex).getCourseNumber().equals("S")) && !(teachers.get(i).schedule.get(periodIndex).getCourseNumber().equals("L"))) {
+					if (teachers.get(i).getInitials().equals(list.get(j).getInitials()) && !(teachers.get(i).getSchedule().get(periodIndex).getCourseNumber().equals("S")) && !(teachers.get(i).getSchedule().get(periodIndex).getCourseNumber().equals("L"))) {
 							
 						list.remove(j);
 					
@@ -90,7 +82,7 @@ public class OnCallProcessor {
 		for (int i = 0; i < onCallList.size(); i++) {
 			for (int j = 0; j < list.size(); j++) {
 				
-				if (onCallList.get(i).onCaller.initials.equals(list.get(j).initials)){
+				if (onCallList.get(i).getOnCaller().getInitials().equals(list.get(j).getInitials())){
 					list.remove(j);
 				}
 			}
@@ -146,7 +138,7 @@ public class OnCallProcessor {
 		
 			
 		//find period of absence
-		String periodOfAbsence = absenteeCourse.period;
+		String periodOfAbsence = absenteeCourse.getPeriod();
 		
 				
 		//Remove teachers from list that are already occupied. They can't be assigned as on call. 
@@ -171,7 +163,7 @@ public class OnCallProcessor {
 			for (int i = minOnCalls; i < MAX_TOTAL_ON_CALLS; i++) {
 				for (int weeklyOnCallsIndex = 0; weeklyOnCallsIndex <= i; weeklyOnCallsIndex++){
 					for (int listIndex = 0; listIndex < list.size(); listIndex++) {
-						if (list.get(listIndex).onCallsTotal == i && list.get(listIndex).onCallsWeekly == weeklyOnCallsIndex) {
+						if (list.get(listIndex).getTotalOnCalls() == i && list.get(listIndex).getWeeklyOnCalls() == weeklyOnCallsIndex) {
 								minOnCallsTeachers.add(list.get(listIndex));
 						}
 						
@@ -181,9 +173,9 @@ public class OnCallProcessor {
 				
 				if (!(minOnCallsTeachers.isEmpty())) {
 					int chosen = rand.nextInt(minOnCallsTeachers.size());
-					updateOnCallTally(minOnCallsTeachers.get(chosen).initials,month,day,periodOfAbsence);
+					updateOnCallTally(minOnCallsTeachers.get(chosen).getInitials(),month,day,periodOfAbsence);
 					onCallList.add(new OnCall(minOnCallsTeachers.get(chosen),absenteeCourse,absentTeacher));
-					updateTeachers(minOnCallsTeachers.get(chosen).initials);					
+					updateTeachers(minOnCallsTeachers.get(chosen).getInitials());					
 										
 					
 					return true;
@@ -199,7 +191,7 @@ public class OnCallProcessor {
 	public void updateTeachers(String initials){
 		for (int i = 0; i < teachers.size(); i++) {
 			Teacher t = teachers.get(i);
-			if (t.initials.equals(initials)) {
+			if (t.getInitials().equals(initials)) {
 				t.increaseTotalOnCalls(1);
 				t.increaseWeeklyOnCalls(1);
 			}

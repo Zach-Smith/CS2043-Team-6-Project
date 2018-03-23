@@ -1,10 +1,10 @@
 package com.team6;
 
 public class OnCall implements Comparable<OnCall>{
-public Teacher onCaller;
-public Course course;
-public Teacher absentTeacher;
-public SupplyTeacher supply;
+private Teacher onCaller;
+private Course course;
+private Teacher absentTeacher;
+private SupplyTeacher supply;
 
   public OnCall(Teacher onCaller, Course course, Teacher absentTeacher) {
 	  this.onCaller = onCaller;
@@ -23,7 +23,7 @@ public SupplyTeacher supply;
   
   
   public int compareTo (OnCall otherOnCall) {
-    return Course.getPeriodIndex(course.period) - Course.getPeriodIndex(otherOnCall.course.period) ; // so classes can be sorted by period
+    return Course.getPeriodIndex(course.getPeriod()) - Course.getPeriodIndex(otherOnCall.course.getPeriod()) ; // so classes can be sorted by period
   }
 
   public boolean isFullTime() {
@@ -37,6 +37,18 @@ public SupplyTeacher supply;
   
   public Course getCourse() {
 	  return course;
+  }
+  
+  public Teacher getOnCaller() {
+	  return onCaller;
+  }
+  
+  public Teacher getAbsentTeacher() {
+	  return absentTeacher;
+  }
+  
+  public SupplyTeacher getSupply() {
+	  return supply;
   }
   
   public String toString(){

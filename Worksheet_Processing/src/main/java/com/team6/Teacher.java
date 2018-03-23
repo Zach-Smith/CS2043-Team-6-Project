@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Teacher {
 
-	public String initials;
-	public ArrayList<Course> schedule;
-	public int onCallsTotal;
-	public int onCallsWeekly;
-	public String skill;
+	private String initials;
+	private ArrayList<Course> schedule;
+	private int onCallsTotal;
+	private int onCallsWeekly;
+	private String skill;
 	
 	public Teacher(String initialsIn, ArrayList<Course> scheduleIn) {
 		initials = initialsIn;
@@ -22,10 +22,18 @@ public class Teacher {
 		onCallsTotal = 0;
 	}
 	
+	public ArrayList<Course> getSchedule(){
+		return schedule;
+	}
 	public String getInitials() {
 		return initials;
 	}
-	
+	public int getTotalOnCalls() {
+		return onCallsTotal;
+	}
+	public int getWeeklyOnCalls() {
+		return onCallsWeekly;
+	}
 	public void setSkill(String skillIn) {
 		skill = skillIn;		
 	}
