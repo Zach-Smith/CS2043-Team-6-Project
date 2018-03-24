@@ -50,6 +50,18 @@ public class Teacher {
 		onCallsWeekly = num;
 	}
 	
+	public int getOnCallsTotal() {
+		return onCallsTotal;
+	}
+	
+	public int getOnCallsWeek() {
+		return onCallsWeekly;
+	}
+	
+	public int getOnCallsMonth() {
+		return onCallsMonthly;
+	}
+	
 	public void increaseTotalOnCalls(int num) {
 		onCallsTotal += num;
 	}
