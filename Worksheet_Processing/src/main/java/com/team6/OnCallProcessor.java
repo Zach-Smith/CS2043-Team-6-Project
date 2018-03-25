@@ -17,8 +17,6 @@ public class OnCallProcessor {
 		absenteeList = absenteeListIn;
 		month = monthIn;
 		day = dayIn;
-		
-		
 	}
 	
 	public void updateOnCallTally(String teacherName,int month,int day,String period) {

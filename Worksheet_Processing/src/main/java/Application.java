@@ -1,8 +1,12 @@
 import com.team6.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
 public class Application {
-	public static void main(String args[]) {
+	public static void main(String args[]) throws InvalidFormatException, IOException {
 		
 		int month = 1; //January
 		int dayOfWeek = 0; //Monday
@@ -79,6 +83,9 @@ public class Application {
 			else {
 				System.out.println("Schedule is NOT in correct format. Please check headers");			
 			}
+			
+			// Test WorkbookWriter		
+			WorkbookWriter.writeAbsences("MC",1,2,"Period 1","./OnCall_Tallies_Example_edited.xlsx","updated-file.xlsx");
 			
 		}
 		catch(Exception e){
