@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Worksheet_Processing/src/main/java"/>
+	<classpathentry kind="lib" path="Worksheet_Processing/build/libs/Worksheet_Processing.jar"/>
+	<classpathentry kind="lib" path="Worksheet_Processing/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="Worksheet_Processing/build/classes/main"/>
+</classpath>
