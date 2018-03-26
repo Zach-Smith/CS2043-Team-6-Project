@@ -30,6 +30,15 @@ public class Application {
 					System.out.println(teachers.get(i));
 				}
 				
+				System.out.println("----------------------------------------------------------------------\n");
+				System.out.println("After reading weekly, monthly, and total on-call tallies for each teacher (from on-call tallies sheet):");
+				
+				//Test ReadOnCallTally
+				ArrayList<ArrayList<String>> onCallTally = ReadOnCallTally.readOnCallTally(ReadOnCallTally.getSheetByMonth());
+				teachers = ReadOnCallTally.updateTeachersFromOnCall(onCallTally, teachers);
+				for (int i=0; i<=teachers.size()-1; i++)
+					System.out.println(teachers.get(i).toString());
+				
 				//Test AbsencesProcessor
 				
 				AbsencesProcessor ap = new AbsencesProcessor(week);
@@ -79,10 +88,13 @@ public class Application {
 				if (ocp.generateOnCallList()) {
 					System.out.println(ocp);
 				}
+				
+				
 			}
 			else {
 				System.out.println("Schedule is NOT in correct format. Please check headers");			
 			}
+			
 			
 			// Test WorkbookWriter		
 			WorkbookWriter.writeAbsences("MC",1,2,"Period 1","./OnCall_Tallies_Example_edited.xlsx","updated-file.xlsx");

@@ -192,6 +192,7 @@ public class OnCallProcessor {
 			if (t.getInitials().equals(initials)) {
 				t.increaseTotalOnCalls(1);
 				t.increaseWeeklyOnCalls(1);
+				t.increaseMonthlyOnCalls(1);
 			}
 		}
 		

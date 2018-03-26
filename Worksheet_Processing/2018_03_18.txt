@@ -1,0 +1,39 @@
+2018_03_18
+
+Period 1
+
+Replacement teacher: KST
+Usual teacher: MISS
+Course: Math
+School teacher or supply: school teacher
+
+Period 2
+
+Replacement teacher: MIMI
+Usual teacher: MISS
+Course: Sport
+School teacher or supply: school teacher
+
+Replacement teacher: CS
+Usual teacher: MISS
+Course: Music
+School teacher or supply: school teacher
+
+Period 3
+
+Period 4
+
+Replacement teacher: WWE
+Usual teacher: MISS
+Course: English
+School teacher or supply: school teacher
+
+Period 5
+
+Replacement teacher: TEA
+Usual teacher: MISS
+Course: Sport
+School teacher or supply: school teacher
+
+Period 6
+
