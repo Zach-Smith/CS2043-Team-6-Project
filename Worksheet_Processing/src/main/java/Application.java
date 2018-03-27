@@ -11,8 +11,11 @@ import javax.swing.*;
 public class Application {
 	
 	
-	private final int max_on_calls = 4;
-	private int month = 1; //January
+	private final int max_on_calls = 30;
+	private final int STARTING_MONTH = 1; //first month in on call tally
+	private final int STARTING_WEEK = 1; //the week in STARTING_MONTH corresponding to the first week in absences record of workbook
+	private int tallySheet;
+	private int month; 
 	private int day;
 	private int dayOfWeek = 0; //Monday
 	private int year;
@@ -95,6 +98,7 @@ public class Application {
 			
 			if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
 				dateConfirmed.setText("Date Entered");
+				tallySheet = month - STARTING_MONTH;
 			}
 			else {
 				dateConfirmed.setText("Error entering date");
@@ -126,8 +130,8 @@ public class Application {
 					System.out.println("After reading weekly, monthly, and total on-call tallies for each teacher (from on-call tallies sheet):");
 					
 					//Test ReadOnCallTally
-					ArrayList<ArrayList<String>> onCallTally = ReadOnCallTally.readOnCallTally(ReadOnCallTally.getSheetByMonth());
-					teachers = ReadOnCallTally.updateTeachersFromOnCall(onCallTally, teachers);
+					ArrayList<ArrayList<String>> onCallTally = ReadOnCallTally.readOnCallTally(tallySheet);
+					teachers = ReadOnCallTally.updateTeachersFromOnCall(onCallTally, teachers,day);
 					for (int i=0; i<=teachers.size()-1; i++)
 						System.out.println(teachers.get(i).toString());
 					
@@ -164,14 +168,14 @@ public class Application {
 					
 					System.out.println();
 					
-					System.out.println("Courses that need to be covered during week " + week + " and day " + dayOfWeek + "\n");
+					System.out.println("Courses that need to be covered during week " + week + ", day of week " + dayOfWeek + "\n");
 		
 					for(int j = 0; j < absenteeCourses.size(); j++) {
 						System.out.println(absenteeCourses.get(j));
 					}
 					
 					System.out.println();
-					System.out.println("On Calls during Month = " + month + ", Week = " + week + ", Day = " + dayOfWeek);
+					System.out.println("On Calls during Month = " + month + ", Day = " + day + ", Year = " + year);
 					System.out.println("----------------------------------------------------------------------\n");		
 					
 					//Test OnCallProcessor

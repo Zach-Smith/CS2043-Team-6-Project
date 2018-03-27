@@ -48,7 +48,7 @@ public class ReadOnCallTally {
 	        return arr;
 	  }
 	  
-	  public static ArrayList<Teacher> updateTeachersFromOnCall(ArrayList<ArrayList<String>> onCall, ArrayList<Teacher> teachers){
+	  public static ArrayList<Teacher> updateTeachersFromOnCall(ArrayList<ArrayList<String>> onCall, ArrayList<Teacher> teachers,int dayOfMonth){
 		 
 		  String initials;
 		  
@@ -62,7 +62,7 @@ public class ReadOnCallTally {
 					int currentMonthly = teachers.get(teacher).getMonthlyOnCalls();
 					int currentTotal = teachers.get(teacher).getTotalOnCalls();
 				    teachers.get(teacher).setOnCallsMonth(currentMonthly + calculateOnCallsMonth(onCall.get(i)));
-					teachers.get(teacher).setOnCallsWeek(currentWeekly + calculateOnCallsWeek(i, onCall));
+					teachers.get(teacher).setOnCallsWeek(currentWeekly + calculateOnCallsWeek(i, onCall,dayOfMonth));
 					teachers.get(teacher).setOnCallsTotal(currentTotal + calculateOnCallsTotal(i));
 				}
 		  }
@@ -86,6 +86,7 @@ public class ReadOnCallTally {
 		  return count;
 	  }
 	  
+	   
 	  private static int calculateOnCallsTotal(int row){
 		  int count=0;
 		  ArrayList<ArrayList<String>> sheet = new ArrayList<ArrayList<String>>();
@@ -108,13 +109,14 @@ public class ReadOnCallTally {
 		  return count;
 	  }
 	  
-	  private static int calculateOnCallsWeek(int row, ArrayList<ArrayList<String>> tallies){
+	  
+	  private static int calculateOnCallsWeek(int row, ArrayList<ArrayList<String>> tallies,int dayOfMonth){
 		  int count=0;
 		  int column=0;
 		  int potentialPreviousMonth=0;
 
-		  Calendar now = Calendar.getInstance();
-		  int dayOfMonth = now.get(Calendar.DAY_OF_MONTH);
+		  //Calendar now = Calendar.getInstance();
+		  //int dayOfMonth = now.get(Calendar.DAY_OF_MONTH);
 
 		  String day = String.valueOf(dayOfMonth);
 		  

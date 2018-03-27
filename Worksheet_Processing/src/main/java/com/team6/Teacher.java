@@ -15,7 +15,9 @@ public class Teacher {
 		initials = initialsIn;
 		schedule = scheduleIn;
 		onCallsWeekly = 0;
+		onCallsMonthly = 0;
 		onCallsTotal = 0;
+		
 	}
 	
 	public Teacher(String initialsIn, int weeklyOnCall, int totalOnCall) {

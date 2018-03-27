@@ -159,29 +159,31 @@ public class OnCallProcessor {
 			//If a teacher to assign as on call is found, update on call tally and on call list and return true
 			//If empty list or arrived at max on calls, return false (need a supply teacher).
 			for (int i = minOnCalls; i < MAX_TOTAL_ON_CALLS; i++) {
-				for (int weeklyOnCallsIndex = 0; weeklyOnCallsIndex <= i; weeklyOnCallsIndex++){
-					for (int listIndex = 0; listIndex < list.size(); listIndex++) {
-						if (list.get(listIndex).getTotalOnCalls() == i && list.get(listIndex).getWeeklyOnCalls() == weeklyOnCallsIndex) {
+				for (int monthlyOnCallsIndex = 0; monthlyOnCallsIndex <= i; monthlyOnCallsIndex++){
+					for (int weeklyOnCallsIndex = 0; weeklyOnCallsIndex <= i; weeklyOnCallsIndex++){
+						for (int listIndex = 0; listIndex < list.size(); listIndex++) {
+							if (list.get(listIndex).getTotalOnCalls() == i && list.get(listIndex).getMonthlyOnCalls() == monthlyOnCallsIndex && list.get(listIndex).getWeeklyOnCalls() == weeklyOnCallsIndex) {
 								minOnCallsTeachers.add(list.get(listIndex));
+							}
+						
 						}
 						
-					}
+						if (!(minOnCallsTeachers.isEmpty())) {
+							int chosen = rand.nextInt(minOnCallsTeachers.size());
+							updateOnCallTally(minOnCallsTeachers.get(chosen).getInitials(),month,day,periodOfAbsence);
+							onCallList.add(new OnCall(minOnCallsTeachers.get(chosen),absenteeCourse,absentTeacher));
+							updateTeachers(minOnCallsTeachers.get(chosen).getInitials());					
+											
+						
+							return true;
+						}
 									
-				}
+					}
 				
-				if (!(minOnCallsTeachers.isEmpty())) {
-					int chosen = rand.nextInt(minOnCallsTeachers.size());
-					updateOnCallTally(minOnCallsTeachers.get(chosen).getInitials(),month,day,periodOfAbsence);
-					onCallList.add(new OnCall(minOnCallsTeachers.get(chosen),absenteeCourse,absentTeacher));
-					updateTeachers(minOnCallsTeachers.get(chosen).getInitials());					
-										
-					
-					return true;
-				}	
-			}
-			
-		}
+				}
 		
+			}
+		}
 		return false;	
 		
 	}
