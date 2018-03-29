@@ -47,5 +47,17 @@ public class AbsencesProcessor {
 		 }
 		 return weekly;
 	 }
+	 
+	 public ArrayList<SupplyTeacher> generateSupplyList() throws InvalidFormatException, IOException{
+		 
+		 ArrayList<SupplyTeacher> supplies = new ArrayList<SupplyTeacher>();
+		 SupplyTeacher s;
+		 for(int i = 3; !arr.get(i).get(27).equals("a"); i++) {
+			 s = new SupplyTeacher(arr.get(i).get(27), arr.get(i).get(28));
+			 supplies.add(s);
+		 }
+		 return supplies;
+}
+	 
 }
 

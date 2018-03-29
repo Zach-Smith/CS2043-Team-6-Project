@@ -2,9 +2,9 @@ package com.team6;
 
 public class SupplyTeacher {
 	private String name;
-	private int code;
+	private String code;
 	
-	public SupplyTeacher(String nameIn,int codeIn) {
+	public SupplyTeacher(String nameIn,String codeIn) {
 		name = nameIn;
 		code = codeIn;
 	}
@@ -13,7 +13,7 @@ public class SupplyTeacher {
 		return name;
 	}
 	
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 	
@@ -21,7 +21,11 @@ public class SupplyTeacher {
 		name = newName;
 	}
 	
-	public void setCode(int newCode) {
+	public void setCode(String newCode) {
 		code = newCode;
+	}
+	
+	public String toString(){
+		return "Name: " + name + ", Code: " + code;
 	}
 }
