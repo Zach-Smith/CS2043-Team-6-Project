@@ -89,7 +89,15 @@ public class Application {
 					System.out.println(ocp);
 				}
 				
-				
+				//Test SupplyProcessor
+				System.out.println("Courses Covered by Supply Teachers:");
+				SupplyProcessor sup = new SupplyProcessor(week);
+				ArrayList<SupplyTeacher> supplyTeachers = sup.generateSupplyList();
+				ArrayList<OnCall> onCalls = sup.assignSupplyTeacher(teachers, supplyTeachers);
+				for(int i = 0; i < onCalls.size(); i++) {
+					System.out.println(onCalls.get(i));
+					System.out.println();
+				}	
 			}
 			else {
 				System.out.println("Schedule is NOT in correct format. Please check headers");			
@@ -98,6 +106,7 @@ public class Application {
 			
 			// Test WorkbookWriter		
 			WorkbookWriter.writeAbsences("MC",1,2,"Period 1","./OnCall_Tallies_Example_edited.xlsx","updated-file.xlsx");
+			
 			
 		}
 		catch(Exception e){
