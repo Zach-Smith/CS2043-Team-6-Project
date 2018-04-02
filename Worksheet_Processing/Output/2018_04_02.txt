@@ -1,0 +1,33 @@
+2018_04_02
+
+
+Period 1
+
+Replacement teacher: IDK
+Usual teacher: AB
+Course: BIOL 101
+Full-time teacher or supply: supply teacher
+
+Period 2
+
+Replacement teacher: IDK
+Usual teacher: AB
+Course: BIOL 121
+Full-time teacher or supply: supply teacher
+
+Period 3A
+
+Replacement teacher: IDK
+Usual teacher: MJ
+Course: L
+Full-time teacher or supply: supply teacher
+
+Period 3B
+
+Replacement teacher: IDK
+Usual teacher: MJ
+Course: S
+Full-time teacher or supply: supply teacher
+
+Period 4
+

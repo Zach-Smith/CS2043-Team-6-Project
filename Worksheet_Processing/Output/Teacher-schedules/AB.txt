@@ -1,0 +1,20 @@
+	Regular schedule: 
+
+Teacher: AB, Period: Period 1, Course: BIOL 101
+Teacher: AB, Period: Period 2, Course: BIOL 121
+Teacher: AB, Period: Period 3A, Course: S
+Teacher: AB, Period: Period 3B, Course: L
+Teacher: AB, Period: Period 4, Course: BIOL 123
+
+
+	Substitutions: 
+Replacement teacher: IDK
+Usual teacher: AB
+Course: BIOL 101
+Full-time teacher or supply: supply teacher
+
+Replacement teacher: IDK
+Usual teacher: AB
+Course: BIOL 121
+Full-time teacher or supply: supply teacher
+

@@ -66,6 +66,14 @@ public class Teacher {
 		return schedule;
 	}
 	
+	public String getTextSchedule() {
+		String s = "";
+		for (int i = 0; i < 5; i++) {
+			s += schedule.get(i) + "\n";
+		}
+		return s;
+	}
+	
 	public void increaseTotalOnCalls(int num) {
 		onCallsTotal += num;
 	}

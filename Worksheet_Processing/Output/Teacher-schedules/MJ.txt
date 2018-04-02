@@ -1,0 +1,20 @@
+	Regular schedule: 
+
+Teacher: MJ, Period: Period 1, Course: MATH 101
+Teacher: MJ, Period: Period 2, Course: MATH 102
+Teacher: MJ, Period: Period 3A, Course: L
+Teacher: MJ, Period: Period 3B, Course: S
+Teacher: MJ, Period: Period 4, Course: S
+
+
+	Substitutions: 
+Replacement teacher: IDK
+Usual teacher: MJ
+Course: L
+Full-time teacher or supply: supply teacher
+
+Replacement teacher: IDK
+Usual teacher: MJ
+Course: S
+Full-time teacher or supply: supply teacher
+

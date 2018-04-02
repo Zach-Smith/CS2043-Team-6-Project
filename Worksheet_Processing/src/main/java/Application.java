@@ -98,6 +98,7 @@ public class Application {
 					System.out.println(onCalls.get(i));
 					System.out.println();
 				}	
+				DailyOutput output = new DailyOutput(onCalls);
 			}
 			else {
 				System.out.println("Schedule is NOT in correct format. Please check headers");			
