@@ -5,24 +5,20 @@ import java.util.ArrayList;
 public class OnCallProcessor {
 	public final int MAX_TOTAL_ON_CALLS;
 	private ArrayList<Teacher> teachers;
+	private ArrayList<SupplyTeacher> supplies;
 	private ArrayList<OnCall> onCallList;
 	private ArrayList<Course> absenteeList;
-	private int month;
-	private int day;
 	
-	public OnCallProcessor(ArrayList<Teacher> teachersIn,ArrayList<Course> absenteeListIn, int maxOnCallsIn, int monthIn, int dayIn){
+	
+	public OnCallProcessor(ArrayList<Teacher> teachersIn,ArrayList<SupplyTeacher> suppliesIn, ArrayList<Course> absenteeListIn, int maxOnCallsIn){
 		MAX_TOTAL_ON_CALLS = maxOnCallsIn;
 		teachers = teachersIn;
+		supplies = suppliesIn;
 		onCallList = new ArrayList<OnCall>();
 		absenteeList = absenteeListIn;
-		month = monthIn;
-		day = dayIn;
 	}
 	
-	public void updateOnCallTally(String teacherName,int month,int day,String period) {
-		//To be implemented
-	}
-	
+		
 	public int findMinOnCalls(ArrayList<Teacher> list) {
 		int min = list.get(0).getTotalOnCalls();
 		for (int i = 1; i < list.size(); i++) {
@@ -80,7 +76,7 @@ public class OnCallProcessor {
 		for (int i = 0; i < onCallList.size(); i++) {
 			for (int j = 0; j < list.size(); j++) {
 				
-				if (onCallList.get(i).getOnCaller().getInitials().equals(list.get(j).getInitials())){
+				if (onCallList.get(i).isFullTime() && onCallList.get(i).getOnCaller().getInitials().equals(list.get(j).getInitials())){
 					list.remove(j);
 				}
 			}
@@ -89,11 +85,12 @@ public class OnCallProcessor {
 	
 	public boolean generateOnCallList() {
 		for (int i = 0;i < absenteeList.size(); i++) {
+			//Try to assign another teacher
 			if(!assignOnCaller(absenteeList.get(i))) {
-				
-				//if(!assignSupply(absenteeList)){
+				//Try to assign supply
+				if(!assignSupply(absenteeList.get(i))){
 					return false;
-				//}
+				}
 				
 			}
 			
@@ -103,13 +100,59 @@ public class OnCallProcessor {
 		
 	}
 	
-	/*
+	public ArrayList<OnCall> getOnCallList(){
+		return onCallList;
+	}
+	
+	
 	public boolean assignSupply(Course absenteeCourse) {
 		Teacher absentTeacher = this.getAbsentTeacher(absenteeCourse);
+		String periodOfAbsence = absenteeCourse.getPeriod();
+		Random rand = new Random();
 		
+		//Construct list from list of supplies
+		ArrayList<SupplyTeacher> list = this.CloneSupplies();
 		
+		//Remove supplies that are already teaching during that period
+		this.removeOccupiedSupplies(list,periodOfAbsence);
+	
+		//Choose randomly from remaining supplies	
+		if (!list.isEmpty()){
+			int chosen = rand.nextInt(list.size());
+			onCallList.add(new OnCall(supplies.get(chosen),absenteeCourse,absentTeacher));
+			return true;
+		}
+		return false;
 	}
-	*/
+	
+	public void removeOccupiedSupplies(ArrayList<SupplyTeacher> list,String period) {
+		for (int i = 0; i < list.size(); i++) {
+			
+			for (int j = 0; j < onCallList.size(); j++){
+					
+				if (!onCallList.get(j).isFullTime() && list.get(i).getName().equals(onCallList.get(j).getSupply().getName()) && onCallList.get(j).getCourse().getPeriod().equals(period)) { 
+					list.remove(i);
+					i--;
+					break;
+				}
+			}
+			
+			
+			
+		}
+	}	
+	
+	
+	
+	
+	public ArrayList<SupplyTeacher> CloneSupplies(){
+		ArrayList<SupplyTeacher> list = new ArrayList<SupplyTeacher>();
+		for(int i = 0; i < supplies.size(); i++) {
+			list.add(supplies.get(i));
+		}
+		
+		return list;
+	}
 	
 	public ArrayList<Teacher> CloneTeachers(){
 		ArrayList<Teacher> list = new ArrayList<Teacher>();
@@ -130,6 +173,7 @@ public class OnCallProcessor {
 		
 		Teacher absentTeacher = this.getAbsentTeacher(absenteeCourse);
 		Random rand = new Random();
+		
 		
 		//Initialize list to be all full time teachers
 		ArrayList<Teacher> list = this.CloneTeachers();
@@ -152,12 +196,15 @@ public class OnCallProcessor {
 			
 			ArrayList<Teacher> minOnCallsTeachers = new ArrayList<Teacher>();
 		
-			//Go through teachers starting from those that have minimum total on calls 
-			//and 0 weekly on calls. If such teachers exit, make a list of them, randomly 
-			//choose one from the list, and assign them as on call. If none exist, look 
-			//for teachers with a higher number of total on calls and weekly on calls
-			//If a teacher to assign as on call is found, update on call tally and on call list and return true
-			//If empty list or arrived at max on calls, return false (need a supply teacher).
+			/*
+			Go through teachers starting from those that have minimum total on calls 
+			and 0 monthly on calls and 0 weekly on calls. If such teachers exist, 
+			make a list of them, randomly 
+			choose one from the list, and assign them as on call. If none exist, look 
+			for teachers with a higher number of total on calls and monthly on calls and weekly on calls
+			If a teacher to assign as on call is found, update on call list and return true
+			If empty list or arrived at max on calls, return false (need a supply teacher).
+			*/
 			for (int i = minOnCalls; i < MAX_TOTAL_ON_CALLS; i++) {
 				for (int monthlyOnCallsIndex = 0; monthlyOnCallsIndex <= i; monthlyOnCallsIndex++){
 					for (int weeklyOnCallsIndex = 0; weeklyOnCallsIndex <= i; weeklyOnCallsIndex++){
@@ -170,20 +217,22 @@ public class OnCallProcessor {
 						
 						if (!(minOnCallsTeachers.isEmpty())) {
 							int chosen = rand.nextInt(minOnCallsTeachers.size());
-							updateOnCallTally(minOnCallsTeachers.get(chosen).getInitials(),month,day,periodOfAbsence);
 							onCallList.add(new OnCall(minOnCallsTeachers.get(chosen),absenteeCourse,absentTeacher));
 							updateTeachers(minOnCallsTeachers.get(chosen).getInitials());					
 											
 						
 							return true;
 						}
-									
+						
+															
 					}
 				
 				}
 		
 			}
 		}
+		
+		
 		return false;	
 		
 	}

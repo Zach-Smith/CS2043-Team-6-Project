@@ -1,12 +1,12 @@
 import com.team6.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Calendar;
+import java.io.*;
 
 
 public class Application {
@@ -15,10 +15,11 @@ public class Application {
 	private final int max_on_calls = 30;
 	private final int STARTING_MONTH = 1; //first month in on call tally
 	private final int STARTING_WEEK = 1; //the week in STARTING_MONTH corresponding to the first week in absences record of workbook
+	private final String ONCALL_OUTPUT_FILE = "./OnCalls_List_Output.txt";
 	private int tallySheet;
 	private int month; 
 	private int day;
-	private int dayOfWeek = 0; //Monday
+	private int dayOfWeek; //Monday is 0, Tuesday is 1, etc.
 	private int year;
 	private int week = 1; //first week
 	private JFrame appFrame;
@@ -104,6 +105,7 @@ public class Application {
 			
 				if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && namedDay >= 2 && namedDay <=6) {
 					dateConfirmed.setText("Date Entered");
+					dayOfWeek = namedDay - 2;
 					tallySheet = month - STARTING_MONTH;
 				}
 				else if (namedDay == 1 || namedDay == 7) {
@@ -203,10 +205,18 @@ public class Application {
 					
 									
 					//Test OnCallProcessor
-					OnCallProcessor ocp = new OnCallProcessor(teachers,absenteeCourses,max_on_calls,month,dayOfWeek);
+					OnCallProcessor ocp = new OnCallProcessor(teachers,supplyTeachers,absenteeCourses,max_on_calls);
 					
 					if (ocp.generateOnCallList()) {
 						System.out.println(ocp);
+						PrintWriter writer = new PrintWriter(ONCALL_OUTPUT_FILE,"UTF-8");
+						writer.println("On-Calls and supplies assigned for " + month + "/" + day + "/" + year + "\n");
+						writer.println(ocp);
+						writer.close();
+					}
+					
+					else {
+						System.out.println("Could not cover all absences");
 					}
 					
 					
