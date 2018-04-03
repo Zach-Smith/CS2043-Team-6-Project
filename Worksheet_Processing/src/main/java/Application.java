@@ -82,7 +82,6 @@ public class Application {
 				System.out.println("On Calls during Month = " + month + ", Week = " + week + ", Day = " + dayOfWeek);
 				System.out.println("----------------------------------------------------------------------\n");	
 				
-				
 				//Test OnCallProcessor
 				OnCallProcessor ocp = new OnCallProcessor(teachers,absenteeCourses,max_on_calls,month,dayOfWeek);
 				
