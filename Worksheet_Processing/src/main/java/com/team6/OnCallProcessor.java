@@ -95,6 +95,9 @@ public class OnCallProcessor {
 			}
 			
 		}
+		if (onCallList.isEmpty()) {
+			return false;
+		}
 		
 		return true;
 		

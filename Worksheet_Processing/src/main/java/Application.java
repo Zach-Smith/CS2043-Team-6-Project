@@ -5,31 +5,41 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.Calendar;
+import java.util.*;
 import java.io.*;
 
 
 public class Application {
 	
-	
-	private final int max_on_calls = 30;
-	private final int STARTING_MONTH = 1; //first month in on call tally
-	private final int STARTING_WEEK = 1; //the week in STARTING_MONTH corresponding to the first week in absences record of workbook
 	private final String ONCALL_OUTPUT_FILE = "./OnCalls_List_Output.txt";
+	
+	private int max_on_calls;
+	private int starting_month; //first month of term in on call tally
+	private int starting_day;
+	private int starting_year;
+	private JTextField startingMonthField;
+	private JTextField startingDayField;
+	private JTextField startingYearField;
+	private JButton startingDateButton;
 	private int tallySheet;
 	private int month; 
 	private int day;
 	private int dayOfWeek; //Monday is 0, Tuesday is 1, etc.
 	private int year;
-	private int week = 1; //first week
+	private int week; //1 corresponds to first week in workbook, 2 corresponds to second, etc.
 	private JFrame appFrame;
 	private JPanel appPanel1;
 	private JPanel appPanel2;
+	private JPanel appPanel3;
+	private JPanel appPanel4;
+	private JPanel appPanel5;
 	private JTextField monthField;
 	private JTextField dayField;
 	private JTextField yearField;
 	private JButton dateButton;
-	private JLabel dateConfirmed;
+	private JLabel outputMessage;
+	private JButton maxOnCallsButton;
+	private JTextField maxOnCallsField;
 	private JButton onCallButton;
 	
 	public Application() {
@@ -47,8 +57,8 @@ public class Application {
 	
 	private void beginGUI() {
 		appFrame = new JFrame("On Call Tracker");
-		appFrame.setSize(400, 400);
-		appFrame.setLayout(new FlowLayout());
+		appFrame.setSize(600,600);
+		appFrame.setLayout(new GridLayout(5,1));
 		
 		appFrame.addWindowListener(new WindowAdapter() {
 	         public void windowClosing(WindowEvent windowEvent){
@@ -64,33 +74,75 @@ public class Application {
 		appPanel2 = new JPanel();
 		appPanel2.setLayout(new FlowLayout());
 		
+		appPanel3 = new JPanel();
+		appPanel3.setLayout(new FlowLayout());
 		
+		appPanel4 = new JPanel();
+		appPanel4.setLayout(new FlowLayout());
+		
+		appPanel5 = new JPanel();
+		appPanel5.setLayout(new FlowLayout());
+		
+		//First Panel
 		monthField = new JTextField("MM",2);
 		dayField = new JTextField("DD",2);
 		yearField = new JTextField("YYYY",4);
-		dateButton = new JButton("Submit date");
-		dateConfirmed = new JLabel("");
+		dateButton = new JButton("Submit current date");
+		
 		
 		appPanel1.add(monthField);
 		appPanel1.add(dayField);
 		appPanel1.add(yearField);
 		appPanel1.add(dateButton);
-		appPanel1.add(dateConfirmed);
+		
+		//Second Panel
+		startingMonthField = new JTextField("MM",2);
+		startingDayField = new JTextField("DD",2);
+		startingYearField = new JTextField("YYYY",4);
+		startingDateButton = new JButton("Submit start-of-term date");
+				
+				
+		appPanel2.add(startingMonthField);
+		appPanel2.add(startingDayField);
+		appPanel2.add(startingYearField);
+		appPanel2.add(startingDateButton);
+		
+		//Third Panel
+		maxOnCallsField = new JTextField("",5); //Assuming the maximum on calls wouldn't have more than 5 digits
+		maxOnCallsButton = new JButton("Enter Max # of On Calls for Term");
+		
+		appPanel3.add(maxOnCallsField);
+		appPanel3.add(maxOnCallsButton);
+		
+		//Fourth Panel
 		
 		onCallButton = new JButton("Assign On-Calls");
 		
-		appPanel2.add(onCallButton);
+		appPanel4.add(onCallButton);
+
+		//Fifth Panel
+		outputMessage = new JLabel("");
+		
+		appPanel5.add(outputMessage);
 		
 		appFrame.add(appPanel1);
 		appFrame.add(appPanel2);
+		appFrame.add(appPanel3);
+		appFrame.add(appPanel4);
+		appFrame.add(appPanel5);
 		appFrame.setVisible(true);
 		
 	}
 	
 	private void processEvents(){
 		dateButton.addActionListener(new dateButtonClickListener());
+		startingDateButton.addActionListener(new startingDateClickActionListener());
+		maxOnCallsButton.addActionListener(new maxButtonClickListener());
 		onCallButton.addActionListener(new onCallButtonClickListener());
+		
 	}
+	
+	
 	
 	private class dateButtonClickListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
@@ -100,27 +152,85 @@ public class Application {
 				year = Integer.parseInt(yearField.getText());
 			
 				Calendar cal = Calendar.getInstance();
-				cal.set(2018,month - 1,day);
+				cal.set(year,month - 1,day);
 				int namedDay = cal.get(Calendar.DAY_OF_WEEK);
 			
 				if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && namedDay >= 2 && namedDay <=6) {
-					dateConfirmed.setText("Date Entered");
 					dayOfWeek = namedDay - 2;
-					tallySheet = month - STARTING_MONTH;
+					outputMessage.setText("Current date Entered");
+					
+					
 				}
 				else if (namedDay == 1 || namedDay == 7) {
-					dateConfirmed.setText("Date falls on a weekend. Please Enter a new date.");
+					outputMessage.setText("Current date falls on a weekend. Please Enter a new current date.");
 				}
 				else {
-					dateConfirmed.setText("Invalid date. Please enter a new date");
+					outputMessage.setText("Invalid current date. Please enter a new current date");
 				}
 			}
 			catch(NumberFormatException nException){
-				dateConfirmed.setText("Invalid date. Please enter a new date.");
+				outputMessage.setText("Invalid current date. Please enter a new current date.");
 			}
 		}
 		
 	}
+	
+	private class startingDateClickActionListener implements ActionListener{
+		
+		private int findWeek(){
+			Calendar cal_term = Calendar.getInstance();
+			Calendar cal_curr = Calendar.getInstance();
+			cal_term.set(starting_year,starting_month-1,starting_day);
+			cal_curr.set(year,month-1,day);
+			
+			int dInterval =  daysInterval(cal_term.getTime(),cal_curr.getTime());
+			int weekInterval = dInterval/7;
+			
+			
+			if (cal_curr.get(Calendar.DAY_OF_WEEK) < cal_term.get(Calendar.DAY_OF_WEEK) ) {
+				weekInterval++;
+			}
+			
+			weekInterval++;
+			return weekInterval;
+			
+			
+		}
+		
+		private int daysInterval(Date date1,Date date2) {
+			return (int)((date2.getTime() - date1.getTime())/(1000 * 60 * 60 * 24));
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			try {
+				starting_month = Integer.parseInt(startingMonthField.getText());
+				starting_day = Integer.parseInt(startingDayField.getText());
+				starting_year = Integer.parseInt(startingYearField.getText());
+			
+				Calendar cal = Calendar.getInstance();
+				cal.set(starting_year,starting_month - 1,starting_day);
+				int namedDay = cal.get(Calendar.DAY_OF_WEEK);
+			
+				if (starting_month >= 1 && starting_month <= 12 && starting_day >= 1 && starting_day <= 31 && namedDay >= 2 && namedDay <=6) {
+					outputMessage.setText("Term start date Entered");
+					tallySheet = month - starting_month;
+					week = findWeek();
+				}
+				else if (namedDay == 1 || namedDay == 7) {
+					outputMessage.setText("Term start date falls on a weekend. Please Enter a new date.");
+				}
+				else {
+					outputMessage.setText("Invalid term start date. Please enter a new date");
+				}
+			}
+			catch(NumberFormatException nException){
+				outputMessage.setText("Invalid term start date. Please enter a new date.");
+			}
+		}
+		
+	}
+	
+	
 	
 	private class onCallButtonClickListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
@@ -206,18 +316,26 @@ public class Application {
 									
 					//Test OnCallProcessor
 					OnCallProcessor ocp = new OnCallProcessor(teachers,supplyTeachers,absenteeCourses,max_on_calls);
+					PrintWriter writer = new PrintWriter(ONCALL_OUTPUT_FILE,"UTF-8");
 					
 					if (ocp.generateOnCallList()) {
 						System.out.println(ocp);
-						PrintWriter writer = new PrintWriter(ONCALL_OUTPUT_FILE,"UTF-8");
+						
 						writer.println("On-Calls and supplies assigned for " + month + "/" + day + "/" + year + "\n");
 						writer.println(ocp);
 						writer.close();
+						
+						outputMessage.setText("On-calls and supplies assigned");						
 					}
-					
 					else {
-						System.out.println("Could not cover all absences");
-					}
+						
+						writer.println("On-Calls and supplies assigned for " + month + "/" + day + "/" + year + "\n");
+						writer.println("None");
+						writer.close();
+						outputMessage.setText("No on-calls or supplies assigned");
+					}						
+					
+					
 					
 					
 				}
@@ -238,4 +356,18 @@ public class Application {
 		
 	}
 	
+	private class maxButtonClickListener implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {
+				max_on_calls = Integer.parseInt(maxOnCallsField.getText());
+				
+				outputMessage.setText("Max # of on calls of " + max_on_calls + " entered");
+				
+			}
+			catch(NumberFormatException nException){
+				outputMessage.setText("Invalid entry for max number of on calls. Please enter a positive number.");
+			}
+		}
+	}
+		
 }
