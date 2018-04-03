@@ -82,15 +82,22 @@ public class Application {
 				System.out.println("On Calls during Month = " + month + ", Week = " + week + ", Day = " + dayOfWeek);
 				System.out.println("----------------------------------------------------------------------\n");	
 				
-				//Test SupplyProcessor
-				SupplyProcessor sup = new SupplyProcessor(week);
-				ArrayList<SupplyTeacher> supplyTeachers = sup.generateSupplyList();
 				
 				//Test OnCallProcessor
-				OnCallProcessor ocp = new OnCallProcessor(teachers,absenteeCourses,max_on_calls,month,dayOfWeek, sup.assignSupplyTeacher(teachers, supplyTeachers));
+				OnCallProcessor ocp = new OnCallProcessor(teachers,absenteeCourses,max_on_calls,month,dayOfWeek);
 				
 				if (ocp.generateOnCallList()) {
 					System.out.println(ocp);
+				}
+				
+				//Test SupplyProcessor
+				System.out.println("Courses covered by supply Teachers:");
+				System.out.println("----------------------------------------------------------------------\n");	
+				SupplyProcessor sup = new SupplyProcessor(week);
+				ArrayList<SupplyTeacher> supplyTeachers = sup.generateSupplyList();
+				ArrayList<OnCall> supplyOnCalls = sup.sortOnCalls(sup.assignSupplyTeacher(teachers, supplyTeachers));
+				for(int i = 0; i < supplyOnCalls.size(); i++) {
+					System.out.println(supplyOnCalls.get(i).getCourse().getPeriod() + "\n" + supplyOnCalls.get(i) + "\n");
 				}
 				
 			}

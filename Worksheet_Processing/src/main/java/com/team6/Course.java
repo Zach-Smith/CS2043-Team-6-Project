@@ -4,12 +4,13 @@ public class Course {
 private String period;
 private String courseNumber;
 public final String teacher;
-public String room; // room is needed for on-call sheets/ printable version
+public String room;
 
-	public Course(String teacher, String period, String courseNumber) { // Implement room number !
+	public Course(String teacher, String period, String courseNumber, String room) {
 		this.period = period;
 		this.courseNumber = courseNumber;
 		this.teacher = teacher;
+		this.room = room;
 	}
 	
 	public static int getPeriodIndex(String period) {
@@ -34,7 +35,7 @@ public String room; // room is needed for on-call sheets/ printable version
 	}
 	
 	public String toString() {
-		return "Teacher: " + teacher + ", Period: " + period + ", Course: " + courseNumber;
+		return "Teacher: " + teacher + ", Period: " + period + ", Course: " + courseNumber + ", Room: " + room;
 	}
 	
 	public String getCourseNumber() {
@@ -43,6 +44,10 @@ public String room; // room is needed for on-call sheets/ printable version
 	
 	public String getPeriod() {
 		return period;
+	}
+	
+	public String getRoom() {
+		return room;
 	}
 
 }

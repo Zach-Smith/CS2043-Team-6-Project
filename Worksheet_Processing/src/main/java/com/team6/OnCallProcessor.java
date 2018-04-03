@@ -6,16 +6,14 @@ public class OnCallProcessor {
 	public final int MAX_TOTAL_ON_CALLS;
 	private ArrayList<Teacher> teachers;
 	private ArrayList<OnCall> onCallList;
-	private ArrayList<OnCall> onCallSupplyList;
 	private ArrayList<Course> absenteeList;
 	private int month;
 	private int day;
 	
-	public OnCallProcessor(ArrayList<Teacher> teachersIn,ArrayList<Course> absenteeListIn, int maxOnCallsIn, int monthIn, int dayIn, ArrayList<OnCall> onCallSupplyList){
+	public OnCallProcessor(ArrayList<Teacher> teachersIn,ArrayList<Course> absenteeListIn, int maxOnCallsIn, int monthIn, int dayIn){
 		MAX_TOTAL_ON_CALLS = maxOnCallsIn;
 		teachers = teachersIn;
 		onCallList = new ArrayList<OnCall>();
-		this.onCallSupplyList = onCallSupplyList;
 		absenteeList = absenteeListIn;
 		month = monthIn;
 		day = dayIn;
@@ -105,14 +103,6 @@ public class OnCallProcessor {
 		
 	}
 	
-	/*
-	public boolean assignSupply(Course absenteeCourse) {
-		Teacher absentTeacher = this.getAbsentTeacher(absenteeCourse);
-		
-		
-	}
-	*/
-	
 	public ArrayList<Teacher> CloneTeachers(){
 		ArrayList<Teacher> list = new ArrayList<Teacher>();
 		for(int i = 0; i < teachers.size(); i++) {
@@ -147,7 +137,6 @@ public class OnCallProcessor {
 		this.removeOnCallTeachers(list,periodOfAbsence);
 		
 		
-		
 		if(list.size() > 0) {
 		
 			int minOnCalls = this.findMinOnCalls(list);
@@ -179,7 +168,7 @@ public class OnCallProcessor {
 										
 					
 					return true;
-				}	
+				}
 			}
 			
 		}
@@ -203,7 +192,6 @@ public class OnCallProcessor {
 	public void sortOnCalls() {
 		int min;
 		OnCall temp;
-		onCallList.addAll(onCallSupplyList);
 		
 		for (int i = 0; i < onCallList.size() - 1; i++) {
 			min = i;

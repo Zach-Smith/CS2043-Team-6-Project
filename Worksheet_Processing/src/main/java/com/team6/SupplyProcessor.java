@@ -55,4 +55,26 @@ public class SupplyProcessor {
 		indexJ = indexJ+5;
 		return list;
 	}
+	
+	public ArrayList<OnCall> sortOnCalls(ArrayList<OnCall> onCallList) {
+		int min;
+		OnCall temp;
+		
+		for (int i = 0; i < onCallList.size() - 1; i++) {
+			min = i;
+			for (int j = i + 1; j < onCallList.size(); j++) {
+				if (onCallList.get(j).compareTo(onCallList.get(min)) < 0){
+					min = j;
+				}
+			}
+			
+			//Swap
+			temp = onCallList.get(min);
+			onCallList.remove(min);
+			onCallList.add(min,onCallList.get(i));
+			onCallList.remove(i);
+			onCallList.add(i,temp);
+		}
+		return onCallList;
+	}
 }

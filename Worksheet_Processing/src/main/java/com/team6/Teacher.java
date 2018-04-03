@@ -9,7 +9,6 @@ public class Teacher {
 	private int onCallsTotal;
 	private int onCallsMonthly;
 	private int onCallsWeekly;
-	private String skill;
 	
 	public Teacher(String initialsIn, ArrayList<Course> scheduleIn) {
 		initials = initialsIn;
@@ -32,10 +31,6 @@ public class Teacher {
 	
 	public String getInitials() {
 		return initials;
-	}
-	
-	public void setSkill(String skillIn) {
-		skill = skillIn;		
 	}
 	
 	public void setOnCallsTotal(int num) {
