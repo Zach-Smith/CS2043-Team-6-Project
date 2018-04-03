@@ -49,10 +49,7 @@ public class Application {
 	
 	public static void main(String args[]) {
 			Application app = new Application();
-			app.processEvents();
-							
-		
-		
+			app.processEvents();		
 	}
 	
 	private void beginGUI() {
@@ -345,7 +342,7 @@ public class Application {
 				
 				
 				// Test WorkbookWriter		
-				WorkbookWriter.writeAbsences("MC",1,2,"Period 1","./OnCall_Tallies_Example_edited.xlsx","updated-file.xlsx");
+				WorkbookWriter.writeAbsences("MC",1,1,2,"Period 1","./OnCall_Tallies_Example_edited.xlsx");
 				
 			}
 			catch(Exception excp){
