@@ -342,7 +342,7 @@ public class Application {
 				
 				
 				// Test WorkbookWriter		
-				WorkbookWriter.writeAbsences("MC",1,1,2,"Period 1","./OnCall_Tallies_Example_edited.xlsx");
+				WorkbookWriter.writeAbsences("TestTeacher2",month,starting_month,day,"Period 2","./OnCall_Tallies_Example_edited.xlsx");
 				
 			}
 			catch(Exception excp){

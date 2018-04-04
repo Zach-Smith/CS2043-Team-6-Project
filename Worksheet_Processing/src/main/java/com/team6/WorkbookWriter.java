@@ -36,14 +36,14 @@ public class WorkbookWriter {
 		int[] startCollumsPeriodes = new int[5];
 		int templateRowIndex = 0;
 		
-		int worksheet = termStartMonth - month;
+		int worksheet =  month - termStartMonth;
 	
 		
 		FileInputStream file = new FileInputStream(xlsFilePath);
-		 XSSFWorkbook workbook = new XSSFWorkbook(file);
-		 XSSFSheet sheet = workbook.getSheetAt(worksheet);
+		XSSFWorkbook workbook = new XSSFWorkbook(file);
+		XSSFSheet sheet = workbook.getSheetAt(worksheet);
 		 
-
+while(teacherFound == false) {
 		for (short currentRow = STARTING_ROW; currentRow < sheet.getLastRowNum(); currentRow++) {
 			Row row = sheet.getRow(currentRow);
 
@@ -63,7 +63,7 @@ public class WorkbookWriter {
 			} else if (cellValue.equals("Period 5")) {
 				currentPeriod = "Period 5";
 				startCollumsPeriodes[4] = currentRow;
-			}else if (cellValue.equals("down't write in this row")) {
+			}else if (cellValue.equals("don't write in this row")) {
 				templateRowIndex = currentRow;
 			}
 	
@@ -86,6 +86,7 @@ public class WorkbookWriter {
 			createNewRow(workbook, sheet, startCollumsPeriodes,teacherName,period,day,templateRowIndex);
 			System.out.println("A new row for the teacher has been created.");
 		}
+}
 		return workbook;
 	}
 	
@@ -93,15 +94,15 @@ private static void createNewRow(Workbook workbook, XSSFSheet sheet, int[] start
 		int day, int templateRowIndex) {
 	int indexForNewRow = 0;
 	if (period.equals("Period 1")) {
-		indexForNewRow = startCollumsPeriodes[0] -2;
+		indexForNewRow = startCollumsPeriodes[1] -2;
 	} else if (period.equals("Period 2")) {
-		indexForNewRow = startCollumsPeriodes[0] -2;
+		indexForNewRow = startCollumsPeriodes[2] -2;
 	} else if (period.equals("Period 3")) {
-		indexForNewRow = startCollumsPeriodes[0] -2;
+		indexForNewRow = startCollumsPeriodes[3] -2;
 	} else if (period.equals("Period 4")) {
-		indexForNewRow = startCollumsPeriodes[0] -2;
+		indexForNewRow = startCollumsPeriodes[4] -2;
 	} else if (period.equals("Period 5")) {
-		indexForNewRow = startCollumsPeriodes[0] -2;
+		indexForNewRow = templateRowIndex -2;
 	}
 	//Row templateRow = sheet.getRow(templateRowIndex);
 	sheet.shiftRows(indexForNewRow,sheet.getLastRowNum(),1);   
@@ -109,92 +110,61 @@ private static void createNewRow(Workbook workbook, XSSFSheet sheet, int[] start
 	
 	copyRow(workbook,  sheet, templateRowIndex, indexForNewRow);
 	
+	sheet.getRow(indexForNewRow).getCell(STARTING_CELL).setCellValue(teacherName);
+	double newCellNumber =sheet.getRow(indexForNewRow-1).getCell(STARTING_CELL-1).getNumericCellValue()+1; 
+	sheet.getRow(indexForNewRow).getCell(STARTING_CELL-1).setCellValue(newCellNumber);
+	
 	//for (short currentCell = 0; currentCell < templateRow.getLastCellNum(); currentCell++) 
 	
 }
 
-	private static void copyRow(Workbook workbook, Sheet worksheet, int sourceRowNum, int destinationRowNum) {
-        // Get the source / new row
-        Row newRow = worksheet.getRow(destinationRowNum);
-        Row sourceRow = worksheet.getRow(sourceRowNum);
+private static void copyRow(Workbook workbook, Sheet worksheet, int templateRowIndex, int indexForNewRow) {
+        Row newRow = worksheet.getRow(indexForNewRow);
+        Row sourceRow = worksheet.getRow(templateRowIndex);
 
-        // If the row exist in destination, push down all rows by 1 else create a new row
-        if (newRow != null) {
-            worksheet.shiftRows(destinationRowNum, worksheet.getLastRowNum(), 1);
+       /* if (newRow != null) {
+            worksheet.shiftRows(indexForNewRow, worksheet.getLastRowNum(), 1);
         } else {
-            newRow = worksheet.createRow(destinationRowNum);
-        }
+            newRow = worksheet.createRow(indexForNewRow);
+        }*/
 
-        // Loop through source columns to add to new row
         for (int i = 0; i < sourceRow.getLastCellNum(); i++) {
-            // Grab a copy of the old/new cell
-            Cell oldCell = sourceRow.getCell(i);
+            Cell TemplateCell = sourceRow.getCell(i);
             Cell newCell = newRow.createCell(i);
 
-            // If the old cell is null jump to next cell
-            if (oldCell == null) {
+            if (TemplateCell == null) {
                 newCell = null;
                 continue;
             }
 
-            // Copy style from old cell and apply to new cell
             CellStyle newCellStyle = workbook.createCellStyle();
-            newCellStyle.cloneStyleFrom(oldCell.getCellStyle());
-            ;
+            newCellStyle.cloneStyleFrom(TemplateCell.getCellStyle());
             newCell.setCellStyle(newCellStyle);
-
-            // If there is a cell comment, copy
-            if (oldCell.getCellComment() != null) {
-                newCell.setCellComment(oldCell.getCellComment());
-            }
-
-            // If there is a cell hyperlink, copy
-            if (oldCell.getHyperlink() != null) {
-                newCell.setHyperlink(oldCell.getHyperlink());
-            }
-
-            // Set the cell data type
-            newCell.setCellType(oldCell.getCellType());
-
-            // Set the cell data value
-            switch (oldCell.getCellType()) {
-                case Cell.CELL_TYPE_BLANK:
-                    newCell.setCellValue(oldCell.getStringCellValue());
+            
+            switch (TemplateCell.getCellTypeEnum()) {
+                case BLANK:
+                    newCell.setCellValue(TemplateCell.getStringCellValue());
                     break;
-                case Cell.CELL_TYPE_BOOLEAN:
-                    newCell.setCellValue(oldCell.getBooleanCellValue());
+                case BOOLEAN:
+                    newCell.setCellValue(TemplateCell.getBooleanCellValue());
                     break;
-                case Cell.CELL_TYPE_ERROR:
-                    newCell.setCellErrorValue(oldCell.getErrorCellValue());
+                case ERROR:
+                    newCell.setCellErrorValue(TemplateCell.getErrorCellValue());
                     break;
-                case Cell.CELL_TYPE_FORMULA:
-                    newCell.setCellFormula(oldCell.getCellFormula());
+                case FORMULA:
+                    newCell.setCellFormula(TemplateCell.getCellFormula());
                     break;
-                case Cell.CELL_TYPE_NUMERIC:
-                    newCell.setCellValue(oldCell.getNumericCellValue());
+                case NUMERIC:
+                    newCell.setCellValue(TemplateCell.getNumericCellValue());
                     break;
-                case Cell.CELL_TYPE_STRING:
-                    newCell.setCellValue(oldCell.getRichStringCellValue());
+                case STRING:
+                    newCell.setCellValue(TemplateCell.getRichStringCellValue());
                     break;
-            }
-        }
-
-        // If there are are any merged regions in the source row, copy to new row
-        for (int i = 0; i < worksheet.getNumMergedRegions(); i++) {
-            CellRangeAddress cellRangeAddress = worksheet.getMergedRegion(i);
-            if (cellRangeAddress.getFirstRow() == sourceRow.getRowNum()) {
-                CellRangeAddress newCellRangeAddress = new CellRangeAddress(newRow.getRowNum(),
-                        (newRow.getRowNum() +
-                                (cellRangeAddress.getLastRow() - cellRangeAddress.getFirstRow()
-                                        )),
-                        cellRangeAddress.getFirstColumn(),
-                        cellRangeAddress.getLastColumn());
-                worksheet.addMergedRegion(newCellRangeAddress);
             }
         }
     }
 	
-private static int getWorksheetNumber (int month) {
+private static int getWorksheetNumber (int month) { // is at the moment not in use, since we don't know how long semesters are.
 		int worksheet = 0;
 		
 		if (month == 1 || month == 6) // month my change depending on when the actual semester starts
