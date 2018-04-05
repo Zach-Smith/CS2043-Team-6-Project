@@ -122,11 +122,11 @@ private static void copyRow(Workbook workbook, Sheet worksheet, int templateRowI
         Row newRow = worksheet.getRow(indexForNewRow);
         Row sourceRow = worksheet.getRow(templateRowIndex);
 
-       /* if (newRow != null) {
+       if (newRow != null) {
             worksheet.shiftRows(indexForNewRow, worksheet.getLastRowNum(), 1);
         } else {
             newRow = worksheet.createRow(indexForNewRow);
-        }*/
+        }
 
         for (int i = 0; i < sourceRow.getLastCellNum(); i++) {
             Cell TemplateCell = sourceRow.getCell(i);
@@ -152,7 +152,8 @@ private static void copyRow(Workbook workbook, Sheet worksheet, int templateRowI
                     newCell.setCellErrorValue(TemplateCell.getErrorCellValue());
                     break;
                 case FORMULA:
-                    newCell.setCellFormula(TemplateCell.getCellFormula());
+                	String formular = "SUM(C"+(indexForNewRow+1)+":w"+(indexForNewRow+1)+")" ;
+                    newCell.setCellFormula(formular);
                     break;
                 case NUMERIC:
                     newCell.setCellValue(TemplateCell.getNumericCellValue());
