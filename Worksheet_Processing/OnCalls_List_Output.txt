@@ -1,84 +1,36 @@
-On-Calls and supplies assigned for 9/8/2017
+On-Calls and supplies assigned for 9/11/2017
 
 Period 1
 ------------
 
-Replacement teacher: MC
+Replacement teacher: IDK
+Usual teacher: RAG
+Course: MPM1DE-01
+Room: 111
+Full-time teacher or supply: supply teacher
+
+Replacement teacher: SC
 Usual teacher: RA
 Course: MAP4C1-01
 Room: 142
 Full-time teacher or supply: full-time teacher
 
 Replacement teacher: NC
-Usual teacher: RAG
-Course: MPM1DE-01
-Room: 111
-Full-time teacher or supply: full-time teacher
-
-Replacement teacher: YC
 Usual teacher: AB
 Course: HRE4M1-07
 Room: PT10
-Full-time teacher or supply: supply teacher
-
-Replacement teacher: AR
-Usual teacher: LC
-Course: HRT3M1-02
-Room: 210
-Full-time teacher or supply: supply teacher
-
-Replacement teacher: AR
-Usual teacher: CC
-Course: MPM1DE-03
-Room: 104
-Full-time teacher or supply: supply teacher
+Full-time teacher or supply: full-time teacher
 
 Period 2
 ------------
 
-Replacement teacher: RAG
-Usual teacher: CC
-Course: HST3M1-02
-Room: 104
-Full-time teacher or supply: full-time teacher
-
 Period 3a
 ------------
-
-Replacement teacher: RA
-Usual teacher: LC
-Course: HZT4U1-01
-Room: 210
-Full-time teacher or supply: full-time teacher
-
-Replacement teacher: SC
-Usual teacher: RAG
-Course: MPM2DE-03
-Room: 111
-Full-time teacher or supply: full-time teacher
 
 Period 3b
 ------------
 
-Replacement teacher: IDK
-Usual teacher: RA
-Course: V1COOP-3
-Room: PT09
-Full-time teacher or supply: supply teacher
-
 Period 4
 ------------
-
-Replacement teacher: JS
-Usual teacher: RAG
-Course: MHF4U1-03
-Room: 111
-Full-time teacher or supply: supply teacher
-
-Replacement teacher: AR
-Usual teacher: AB
-Course: HRE1O1-08
-Room: PT10
-Full-time teacher or supply: supply teacher
 
 

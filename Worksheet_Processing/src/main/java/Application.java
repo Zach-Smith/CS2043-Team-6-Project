@@ -265,6 +265,78 @@ public class Application {
 		public void actionPerformed(ActionEvent e){
 			try {
 				
+				ScheduleProcessor sp = new ScheduleProcessor();
+				
+				//Check teacher schedule format
+				if(sp.checkScheduleFormat()) {
+					
+					//Create list of teachers
+					ArrayList<Teacher> teachers = sp.generateTeachers();
+					
+					//Find absences
+					AbsencesProcessor ap = new AbsencesProcessor(week);
+					ArrayList<ArrayList<Course>> absenteeCoursesOfWeek = ap.findAbsences(teachers);
+					ArrayList<Course> absenteeCourses = absenteeCoursesOfWeek.get(dayOfWeek);
+					
+					//Update on call counts
+					ArrayList<ArrayList<String>> onCallTally = ReadOnCallTally.readOnCallTally(tallySheet);
+					teachers = ReadOnCallTally.updateTeachersFromOnCall(onCallTally, teachers,day);
+					
+					//Create on calls from VP entered supply teachers
+					SupplyProcessor supplyProcessor = new SupplyProcessor(week);
+					ArrayList<SupplyTeacher> supplyTeachers = supplyProcessor.generateSupplyList();
+					
+					ArrayList<OnCall> supplyOnCalls = supplyProcessor.sortOnCalls(supplyProcessor.assignSupplyTeacher(teachers, supplyTeachers,dayOfWeek));
+					
+					
+					//Assign more on calls
+					OnCallProcessor ocp = new OnCallProcessor(teachers,supplyTeachers,supplyOnCalls,absenteeCourses,max_on_calls);
+					PrintWriter writer = new PrintWriter(ONCALL_OUTPUT_FILE,"UTF-8");
+					
+					if (ocp.generateOnCallList()) {
+						
+						
+						writer.println("On-Calls and supplies assigned for " + month + "/" + day + "/" + year + "\n");
+						writer.println(ocp);
+						writer.close();
+						
+						onCallDisplay.setText(ocp.toString());
+						
+						ArrayList<OnCall> onCallList = ocp.getOnCallList();
+						
+						
+						//Write to on call tally
+						for (int i = 0; i < onCallList.size(); i++) {
+							if (onCallList.get(i).isFullTime()){
+								WorkbookWriter.writeTally(onCallList.get(i).getOnCaller().getInitials(), year,month, starting_month, day,onCallList.get(i).getCourse().getPeriod(),"./OnCall_Tally.xlsx");
+							}	
+						}
+						
+						
+						outputMessage.setText("On-calls and supplies assigned");	
+						
+						
+						
+						
+					}
+					else {
+						
+						writer.println("On-Calls and supplies assigned for " + month + "/" + day + "/" + year + "\n");
+						writer.println("None");
+						writer.close();
+						
+						outputMessage.setText("No on-calls or supplies assigned");
+					}						
+				
+				}
+				else {
+					outputMessage.setText("Schedule is NOT in correct format. Please check headers");			
+				}
+				
+				/*
+				****Used for testing****
+				 
+				 
 				//Test ScheduleProcessor
 				
 				ScheduleProcessor sp = new ScheduleProcessor();
@@ -337,7 +409,8 @@ public class Application {
 					
 					System.out.println("List of supply teachers:\n");
 					
-					ArrayList<SupplyTeacher> supplyTeachers = supplyProcessor.generateSupplyList();										for (int i = 0; i < supplyTeachers.size(); i++) {
+					ArrayList<SupplyTeacher> supplyTeachers = supplyProcessor.generateSupplyList();										
+					for (int i = 0; i < supplyTeachers.size(); i++) {
 						System.out.println(supplyTeachers.get(i));
 						System.out.println();
 					}
@@ -410,7 +483,7 @@ public class Application {
 					outputMessage.setText("Schedule is NOT in correct format. Please check headers");			
 				}
 				
-				
+				*/
 				
 				
 			}
