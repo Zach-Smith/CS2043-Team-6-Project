@@ -313,6 +313,7 @@ public class Application {
 						}
 						
 						
+						
 						outputMessage.setText("On-calls and supplies assigned");	
 						
 						
@@ -324,7 +325,7 @@ public class Application {
 						writer.println("On-Calls and supplies assigned for " + month + "/" + day + "/" + year + "\n");
 						writer.println("None");
 						writer.close();
-						
+						onCallDisplay.setText("");
 						outputMessage.setText("No on-calls or supplies assigned");
 					}						
 				

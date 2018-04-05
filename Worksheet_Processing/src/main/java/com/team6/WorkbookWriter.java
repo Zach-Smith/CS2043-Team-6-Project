@@ -94,7 +94,7 @@ while(teacherFound == false) {
 		}
 		if (teacherFound == false) {
 			createNewRow(workbook, sheet, startCollumsPeriodes,teacherName,period,day,templateRowIndex);
-			System.out.println("A new row for the teacher has been created.");
+			
 		}
 }
 		
@@ -155,11 +155,11 @@ private static void copyRow(Workbook workbook, Sheet worksheet, int templateRowI
         Row newRow = worksheet.getRow(indexForNewRow);
         Row sourceRow = worksheet.getRow(templateRowIndex);
 
-       /* if (newRow != null) {
+        if (newRow != null) {
             worksheet.shiftRows(indexForNewRow, worksheet.getLastRowNum(), 1);
         } else {
             newRow = worksheet.createRow(indexForNewRow);
-        }*/
+        }
 
         for (int i = 0; i < sourceRow.getLastCellNum(); i++) {
             Cell TemplateCell = sourceRow.getCell(i);
@@ -185,7 +185,8 @@ private static void copyRow(Workbook workbook, Sheet worksheet, int templateRowI
                     newCell.setCellErrorValue(TemplateCell.getErrorCellValue());
                     break;
                 case FORMULA:
-                    newCell.setCellFormula(TemplateCell.getCellFormula());
+                	String formular = "SUM(C"+(indexForNewRow+1)+":w"+(indexForNewRow+1)+")" ;
+                	newCell.setCellFormula(formular);
                     break;
                 case NUMERIC:
                     newCell.setCellValue(TemplateCell.getNumericCellValue());
