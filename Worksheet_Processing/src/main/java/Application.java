@@ -295,14 +295,11 @@ public class Application {
 					
 					if (ocp.generateOnCallList()) {
 						
-						
-						writer.println("On-Calls and supplies assigned for " + month + "/" + day + "/" + year + "\n");
-						writer.println(ocp);
-						writer.close();
-						
 						onCallDisplay.setText(ocp.toString());
 						
 						ArrayList<OnCall> onCallList = ocp.getOnCallList();
+						
+						DailyOutput output = new DailyOutput(onCallList, month, day, year);
 						
 						
 						//Write to on call tally

@@ -7,10 +7,16 @@ import java.io.*;
 
 public class DailyOutput {
 	
-	ArrayList<OnCall> onCalls;
+	private ArrayList<OnCall> onCalls;
+	private int month;
+	private int day;
+	private int year;
 	
-	public DailyOutput(ArrayList<OnCall> onCallsIn) {
+	public DailyOutput(ArrayList<OnCall> onCallsIn, int dayIn, int monthIn, int yearIn) {
 		onCalls = onCallsIn;
+		year = yearIn;
+		month = monthIn;
+		day = dayIn;
 		sort();
 		try {
 			printDailyRecord();
@@ -27,12 +33,10 @@ public class DailyOutput {
 	}
 	
 	public void printDailyRecord() throws IOException, FileNotFoundException {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
-			Date date = new Date();
-			String today = dateFormat.format(date);
+			String today = month + "-" + day + "-" + year;
 			
-			String filename = today + ".txt";
-			File dir = new File("Output");
+			String filename = "Daily Record.txt";
+			File dir = new File("Output/" + today);
 			dir.mkdirs();
 			File outFile = new File(dir, filename);
 			outFile.createNewFile();
@@ -41,15 +45,15 @@ public class DailyOutput {
 			PrintWriter p = new PrintWriter(b);
 
 			int periodIndex;
-			p.println(today + "\n");
+			p.println("On-Calls and supplies assigned for " + month + "/" + day + "/" + year + "\n------------");
 
 			for(int i=0; i<=4; i++) {
 				String period = Course.getIndexFromPeriod(i);
-				p.println("\n" + period + "\n");
+				p.println("\n" + period + "\n" + "------------");
 				for(int j=0; j<=onCalls.size()-1; j++) {
 					periodIndex = onCalls.get(j).getCourse().getPeriodIndex(onCalls.get(j).getCourse().getPeriod());
 					if(periodIndex == i) {
-						p.println(onCalls.get(j).toString());
+						p.println(onCalls.get(j).toString() + "\n");
 					}	
 				}
 			}
@@ -59,12 +63,11 @@ public class DailyOutput {
 	
 	public void printTeacherSchedules()throws IOException, FileNotFoundException  {
 		
+		String today = month + "-" + day + "-" + year;
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
-		Date date = new Date();
-		String today = dateFormat.format(date);
+		String filename = today + ".txt";
 		
-		File dir = new File("Output/Teacher-schedules");
+		File dir = new File("Output/" + today + "/Teacher-specific schedules");
 		dir.mkdirs();
 		String initials;
 		File tmp;
