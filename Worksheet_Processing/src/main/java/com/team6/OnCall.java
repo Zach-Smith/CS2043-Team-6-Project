@@ -62,6 +62,7 @@ private SupplyTeacher supply;
     }
     s += "Usual teacher: " + absentTeacher.getInitials() + "\n";
     s += "Course: " + course.getCourseNumber() + "\n";
+    s += "Room: " + course.getRoom() + "\n";
     s += "Full-time teacher or supply: ";
     if (isFullTime())
       s += "full-time teacher";

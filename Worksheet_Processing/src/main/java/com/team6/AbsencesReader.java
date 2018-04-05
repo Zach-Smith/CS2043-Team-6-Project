@@ -7,13 +7,13 @@ import java.util.Iterator;
 
 
 public class AbsencesReader {
-	 public static final String XLSX_FILE_PATH = "./Workbook-Term2017-2018W.xlsx"; 	
+	 public static final String XLSX_FILE_PATH = "./Workbook.xlsx"; 	
 	 private Workbook workbook;
 	 private Sheet sheet;
 	 
 	 public AbsencesReader(int week) throws IOException,InvalidFormatException {
 		  workbook = WorkbookFactory.create(new File(XLSX_FILE_PATH));
-		  sheet = workbook.getSheetAt(week);  
+		   sheet = workbook.getSheetAt(week);  
 	  }
 	 
 	 public ArrayList<ArrayList<String>> readAbsences() throws IOException,InvalidFormatException{

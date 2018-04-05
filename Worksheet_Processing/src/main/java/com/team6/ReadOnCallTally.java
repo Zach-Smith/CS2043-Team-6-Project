@@ -9,8 +9,8 @@ import java.text.*;
 
 public class ReadOnCallTally {
 	
-	  public static final String XLSX_FILE_PATH = "./Workbook-Term2017-2018W.xlsx";
-	  public static final String XLSX_FILE_PATH2 = "./OnCall_Tallies_Example_edited.xlsx";
+	  public static final String XLSX_FILE_PATH = "./Workbook.xlsx";
+	  public static final String XLSX_FILE_PATH2 = "./OnCall_Tally.xlsx";
 	  public static final int DAY_OF_MONTH_ROW = 5;
 	  public static final int DAY_OF_WEEK_ROW = 4;
 	  public static final int MONTH_WORD_ROWCOLUMN = 2;
@@ -90,7 +90,7 @@ public class ReadOnCallTally {
 	  private static int calculateOnCallsTotal(int row){
 		  int count=0;
 		  ArrayList<ArrayList<String>> sheet = new ArrayList<ArrayList<String>>();
-		  for(int i=0; i<= 6; i++) {
+		  for(int i=0; i<= 4; i++) {
 			  try {
 				  sheet = readOnCallTally(i);
 			  }
@@ -182,7 +182,7 @@ public class ReadOnCallTally {
 		  Calendar cal = Calendar.getInstance();
 		  String month = new SimpleDateFormat("MMMM").format(cal.getTime());
 		  ArrayList<ArrayList<String>> temp;
-		  for(int i=0; i<=6; i++) {
+		  for(int i=0; i<=4; i++) {
 			  temp = readOnCallTally(i);
 			  if (temp.get(MONTH_WORD_ROWCOLUMN).get(MONTH_WORD_ROWCOLUMN).equals(month)) {
 		  		currentMonth = i;

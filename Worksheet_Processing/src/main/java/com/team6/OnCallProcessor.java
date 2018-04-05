@@ -8,14 +8,16 @@ public class OnCallProcessor {
 	private ArrayList<SupplyTeacher> supplies;
 	private ArrayList<OnCall> onCallList;
 	private ArrayList<Course> absenteeList;
+
 	
 	
-	public OnCallProcessor(ArrayList<Teacher> teachersIn,ArrayList<SupplyTeacher> suppliesIn, ArrayList<Course> absenteeListIn, int maxOnCallsIn){
+	public OnCallProcessor(ArrayList<Teacher> teachersIn,ArrayList<SupplyTeacher> suppliesIn, ArrayList<OnCall> suppliesAssignedByVPIn, ArrayList<Course> absenteeListIn, int maxOnCallsIn){
 		MAX_TOTAL_ON_CALLS = maxOnCallsIn;
 		teachers = teachersIn;
 		supplies = suppliesIn;
-		onCallList = new ArrayList<OnCall>();
+		onCallList = suppliesAssignedByVPIn;
 		absenteeList = absenteeListIn;
+		
 	}
 	
 		
@@ -220,7 +222,9 @@ public class OnCallProcessor {
 						
 						if (!(minOnCallsTeachers.isEmpty())) {
 							int chosen = rand.nextInt(minOnCallsTeachers.size());
+							
 							onCallList.add(new OnCall(minOnCallsTeachers.get(chosen),absenteeCourse,absentTeacher));
+							
 							updateTeachers(minOnCallsTeachers.get(chosen).getInitials());					
 											
 						
@@ -278,6 +282,7 @@ public class OnCallProcessor {
 	
 	
 	public String toString() {
+		
 		this.sortOnCalls();
 		String s = "";
 		int i = 0;
@@ -300,19 +305,19 @@ public class OnCallProcessor {
 			i++;
 		}
 		
-		s += "Period 3A\n";
+		s += "Period 3a\n";
 		s+= "------------\n\n";
 		
-		while(i < onCallList.size() && onCallList.get(i).getCourse().getPeriod().equals("Period 3A")) {
+		while(i < onCallList.size() && onCallList.get(i).getCourse().getPeriod().equals("Period 3a")) {
 					
 			s += onCallList.get(i) + "\n\n";
 			i++;
 		}
 		
-		s += "Period 3B\n";
+		s += "Period 3b\n";
 		s+= "------------\n\n";
 		
-		while(i < onCallList.size() && onCallList.get(i).getCourse().getPeriod().equals("Period 3B")) {
+		while(i < onCallList.size() && onCallList.get(i).getCourse().getPeriod().equals("Period 3b")) {
 					
 			s += onCallList.get(i) + "\n\n";
 			i++;

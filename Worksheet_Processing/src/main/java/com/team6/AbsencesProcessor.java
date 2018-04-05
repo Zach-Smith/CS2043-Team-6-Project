@@ -12,7 +12,7 @@ public class AbsencesProcessor {
 	 
 	 public AbsencesProcessor(int week) throws InvalidFormatException, IOException {
 		   ar = new AbsencesReader(week);
-		   arr = ar.readAbsences();
+		   arr = ar.readAbsences(); 
 	  }
 	 
 	 
@@ -22,8 +22,10 @@ public class AbsencesProcessor {
 		 ArrayList<ArrayList<Course>> weekly = new ArrayList<ArrayList<Course>>();
 		 int indexJ = 2;
 		 while(weekly.size() < 5) {
-			 for(int i = 3; !arr.get(i).get(0).equals("a"); i++) {
-		 
+			 
+			 
+			 for(int i = 3; i < arr.size()-1 && !arr.get(i).get(0).equals("a"); i++) {
+				 
 				 String initials = arr.get(i).get(0);
 				 int index;
 				 for(index = 0;index < teachers.size(); index++) {
@@ -47,17 +49,5 @@ public class AbsencesProcessor {
 		 }
 		 return weekly;
 	 }
-	 
-	 public ArrayList<SupplyTeacher> generateSupplyList() throws InvalidFormatException, IOException{
-		 
-		 ArrayList<SupplyTeacher> supplies = new ArrayList<SupplyTeacher>();
-		 SupplyTeacher s;
-		 for(int i = 3; !arr.get(i).get(27).equals("a"); i++) {
-			 s = new SupplyTeacher(arr.get(i).get(27), arr.get(i).get(28));
-			 supplies.add(s);
-		 }
-		 return supplies;
-}
-	 
 }
 

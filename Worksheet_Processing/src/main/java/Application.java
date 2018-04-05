@@ -33,6 +33,7 @@ public class Application {
 	private JPanel appPanel3;
 	private JPanel appPanel4;
 	private JPanel appPanel5;
+	private JPanel appPanel6;
 	private JTextField monthField;
 	private JTextField dayField;
 	private JTextField yearField;
@@ -41,6 +42,7 @@ public class Application {
 	private JButton maxOnCallsButton;
 	private JTextField maxOnCallsField;
 	private JButton onCallButton;
+	private JTextArea onCallDisplay;
 	
 	public Application() {
 		beginGUI();
@@ -58,7 +60,7 @@ public class Application {
 	private void beginGUI() {
 		appFrame = new JFrame("On Call Tracker");
 		appFrame.setSize(600,600);
-		appFrame.setLayout(new GridLayout(5,1));
+		appFrame.setLayout(new GridLayout(6,1));
 		
 		appFrame.addWindowListener(new WindowAdapter() {
 	         public void windowClosing(WindowEvent windowEvent){
@@ -81,7 +83,10 @@ public class Application {
 		appPanel4.setLayout(new FlowLayout());
 		
 		appPanel5 = new JPanel();
-		appPanel5.setLayout(new FlowLayout());
+		appPanel5.setLayout(new BorderLayout());
+		
+		appPanel6 = new JPanel();
+		appPanel6.setLayout(new GridLayout(2,1));
 		
 		//First Panel
 		monthField = new JTextField("MM",2);
@@ -121,15 +126,33 @@ public class Application {
 		appPanel4.add(onCallButton);
 
 		//Fifth Panel
-		outputMessage = new JLabel("");
+		JLabel onCallListLabel = new JLabel("List of On Calls",SwingConstants.CENTER);
 		
-		appPanel5.add(outputMessage);
+		onCallDisplay = new JTextArea(50,70);
+		onCallDisplay.setEditable(false);
+		onCallDisplay.setText("");
+		
+		JScrollPane scrollBar = new JScrollPane(onCallDisplay);
+		scrollBar.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		
+		appPanel5.add(onCallListLabel,BorderLayout.PAGE_START);
+		appPanel5.add(scrollBar,BorderLayout.CENTER);
+		
+		
+		//Sixth Panel
+		JLabel blank = new JLabel("");
+		outputMessage = new JLabel("",SwingConstants.CENTER);
+		
+		appPanel6.add(blank);
+		appPanel6.add(outputMessage);
 		
 		appFrame.add(appPanel1);
 		appFrame.add(appPanel2);
 		appFrame.add(appPanel3);
 		appFrame.add(appPanel4);
 		appFrame.add(appPanel5);
+		appFrame.add(appPanel6);
 		appFrame.setVisible(true);
 		
 	}
@@ -184,6 +207,7 @@ public class Application {
 			cal_curr.set(year,month-1,day);
 			
 			int dInterval =  daysInterval(cal_term.getTime(),cal_curr.getTime());
+			
 			int weekInterval = dInterval/7;
 			
 			
@@ -213,7 +237,12 @@ public class Application {
 			
 				if (starting_month >= 1 && starting_month <= 12 && starting_day >= 1 && starting_day <= 31 && namedDay >= 2 && namedDay <=6) {
 					outputMessage.setText("Term start date Entered");
-					tallySheet = month - starting_month;
+					if (month >= starting_month) {
+						tallySheet = month - starting_month;
+					}
+					else {
+						tallySheet = month - starting_month + 12; 
+					}
 					week = findWeek();
 				}
 				else if (namedDay == 1 || namedDay == 7) {
@@ -250,15 +279,6 @@ public class Application {
 					for (int i = 0; i < teachers.size(); i++) {
 						System.out.println(teachers.get(i));
 					}
-					
-					System.out.println("----------------------------------------------------------------------\n");
-					System.out.println("After reading weekly, monthly, and total on-call tallies for each teacher (from on-call tallies sheet):");
-					
-					//Test ReadOnCallTally
-					ArrayList<ArrayList<String>> onCallTally = ReadOnCallTally.readOnCallTally(tallySheet);
-					teachers = ReadOnCallTally.updateTeachersFromOnCall(onCallTally, teachers,day);
-					for (int i=0; i<=teachers.size()-1; i++)
-						System.out.println(teachers.get(i).toString());
 					
 					//Test AbsencesProcessor
 					
@@ -300,14 +320,43 @@ public class Application {
 					}
 					
 					System.out.println();
+					
+					System.out.println("----------------------------------------------------------------------\n");
+					System.out.println("After reading weekly, monthly, and total on-call tallies for each teacher (from on-call tallies sheet):");
+					
+					//Test ReadOnCallTally
+					ArrayList<ArrayList<String>> onCallTally = ReadOnCallTally.readOnCallTally(tallySheet);
+					teachers = ReadOnCallTally.updateTeachersFromOnCall(onCallTally, teachers,day);
+					for (int i=0; i<=teachers.size()-1; i++)
+						System.out.println(teachers.get(i).toString());
+					
+										
+					//Test SupplyProcessor
+					
+					SupplyProcessor supplyProcessor = new SupplyProcessor(week);
+					
 					System.out.println("List of supply teachers:\n");
 					
-					ArrayList<SupplyTeacher> supplyTeachers = ap.generateSupplyList();
-					
-					for (int i = 0; i < supplyTeachers.size(); i++) {
+					ArrayList<SupplyTeacher> supplyTeachers = supplyProcessor.generateSupplyList();										for (int i = 0; i < supplyTeachers.size(); i++) {
 						System.out.println(supplyTeachers.get(i));
 						System.out.println();
 					}
+					
+					System.out.println();
+					System.out.println("Courses covered by supply Teachers as assigned by VP:");
+					System.out.println("----------------------------------------------------------------------\n");	
+					
+									
+					ArrayList<OnCall> supplyOnCalls = supplyProcessor.sortOnCalls(supplyProcessor.assignSupplyTeacher(teachers, supplyTeachers,dayOfWeek));
+					
+					
+					
+					for(int i = 0; i < supplyOnCalls.size(); i++) {
+						System.out.println(supplyOnCalls.get(i).getCourse().getPeriod() + "\n" + supplyOnCalls.get(i) + "\n");
+					}
+					
+					
+										
 					
 					System.out.println();
 					System.out.println("On Calls during Month = " + month + ", Day = " + day + ", Year = " + year);
@@ -315,7 +364,7 @@ public class Application {
 					
 									
 					//Test OnCallProcessor
-					OnCallProcessor ocp = new OnCallProcessor(teachers,supplyTeachers,absenteeCourses,max_on_calls);
+					OnCallProcessor ocp = new OnCallProcessor(teachers,supplyTeachers,supplyOnCalls,absenteeCourses,max_on_calls);
 					PrintWriter writer = new PrintWriter(ONCALL_OUTPUT_FILE,"UTF-8");
 					
 					if (ocp.generateOnCallList()) {
@@ -325,13 +374,31 @@ public class Application {
 						writer.println(ocp);
 						writer.close();
 						
-						outputMessage.setText("On-calls and supplies assigned");						
+						onCallDisplay.setText(ocp.toString());
+						
+						ArrayList<OnCall> onCallList = ocp.getOnCallList();
+						
+						
+						//Test WorkbookWriter
+						for (int i = 0; i < onCallList.size(); i++) {
+							if (onCallList.get(i).isFullTime()){
+								WorkbookWriter.writeTally(onCallList.get(i).getOnCaller().getInitials(), year,month, starting_month, day,onCallList.get(i).getCourse().getPeriod(),"./OnCall_Tally.xlsx");
+							}	
+						}
+						
+						
+						outputMessage.setText("On-calls and supplies assigned");	
+						
+						
+						
+						
 					}
 					else {
 						
 						writer.println("On-Calls and supplies assigned for " + month + "/" + day + "/" + year + "\n");
 						writer.println("None");
 						writer.close();
+						
 						outputMessage.setText("No on-calls or supplies assigned");
 					}						
 					
@@ -340,16 +407,16 @@ public class Application {
 					
 				}
 				else {
-					System.out.println("Schedule is NOT in correct format. Please check headers");			
+					outputMessage.setText("Schedule is NOT in correct format. Please check headers");			
 				}
 				
 				
-				// Test WorkbookWriter		
-				WorkbookWriter.writeAbsences("MC",1,2,"Period 1","./OnCall_Tallies_Example_edited.xlsx","updated-file.xlsx");
+				
 				
 			}
 			catch(Exception excp){
 				excp.printStackTrace();
+				outputMessage.setText("Error in processing worksheets");
 			}
 		
 		}

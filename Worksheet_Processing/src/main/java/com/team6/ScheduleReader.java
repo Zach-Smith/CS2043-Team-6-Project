@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 public class ScheduleReader {
 	
-	  public static final String XLSX_FILE_PATH = "./Workbook-Term2017-2018W.xlsx"; 	
+	  public static final String XLSX_FILE_PATH = "./Workbook.xlsx"; 	
 	  private Workbook workbook;
 	  private Sheet scheduleSheet;
 	  
@@ -41,25 +41,51 @@ public class ScheduleReader {
 	              
 	              if (headerCount == 0 && columnHeader.equals("Name")) {
 	            	  headerCount++;
+
 	              }
 	              else if (headerCount == 1 && columnHeader.equals("Period 1")) {
 	            	  headerCount++;
+
 	          	  }
-	              else if (headerCount == 2 && columnHeader.equals("Period 2")) {
+	              else if (headerCount == 2 && columnHeader.equals("RM 1")) {
 	            	  headerCount++;
+
 	          	  }
-	              else if (headerCount == 3 && columnHeader.equals("Period 3A")) {
+	              else if (headerCount == 3 && columnHeader.equals("Period 2")) {
 	            	  headerCount++;
+	            	  
 	          	  }
-	              else if (headerCount == 4 && columnHeader.equals("Period 3B")) {
+	              else if (headerCount == 4 && columnHeader.equals("RM 2")) {
 	            	  headerCount++;
+	            	  
 	          	  }
-	              else if (headerCount == 5 && columnHeader.equals("Period 4")) {
+	              else if (headerCount == 5 && columnHeader.equals("Period 3a")) {
 	            	  headerCount++;
+	            	  
+	          	  }
+	              else if (headerCount == 6 && columnHeader.equals("RM 3a")) {
+	            	  headerCount++;
+	            	  
+	          	  }
+	              else if (headerCount == 7 && columnHeader.equals("Period 3b")) {
+	            	  headerCount++;
+	            	  
+	          	  }
+	              else if (headerCount == 8 && columnHeader.equals("RM 3b")) {
+	            	  headerCount++;
+	            	  
+	          	  }
+	              else if (headerCount == 9 && columnHeader.equals("Period 4")) {
+	            	  headerCount++;
+	            	  
+	          	  }
+	              else if (headerCount == 10 && columnHeader.equals("RM 4")) {
+	            	  headerCount++;
+	            	  
 	          	  }
 	          }
 		
-			  return headerCount == 6;
+			  return headerCount == 11;
 		  }
 	  }
 	  
@@ -77,12 +103,17 @@ public class ScheduleReader {
 			  	
 			  Iterator<Cell> cellIt = row.cellIterator();
 			  
-			  for (int i = 0; i < 6; i++) {
-				  
+			  for (int i = 0; i < 11; i++) {
+				 
 				  Cell c = cellIt.next();
 				  String val = formatter.formatCellValue(c);
 				  
-				  a.add(val);
+				  
+				  if(val.equals("")) {
+					  a.add("Null");
+				  }else {
+					  a.add(val);
+				  }
 				  
 			  }
 			  if(a.get(0).equals("")) {
