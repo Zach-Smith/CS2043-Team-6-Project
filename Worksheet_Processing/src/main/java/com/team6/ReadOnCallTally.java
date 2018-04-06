@@ -48,7 +48,7 @@ public class ReadOnCallTally {
 	        return arr;
 	  }
 	  
-	  public static ArrayList<Teacher> updateTeachersFromOnCall(ArrayList<ArrayList<String>> onCall, ArrayList<Teacher> teachers,int dayOfMonth){
+	  public static ArrayList<Teacher> updateTeachersFromOnCall(ArrayList<ArrayList<String>> onCall, ArrayList<Teacher> teachers,int dayOfMonth, int month){
 		 
 		  String initials;
 		  
@@ -62,7 +62,7 @@ public class ReadOnCallTally {
 					int currentMonthly = teachers.get(teacher).getMonthlyOnCalls();
 					int currentTotal = teachers.get(teacher).getTotalOnCalls();
 				    teachers.get(teacher).setOnCallsMonth(currentMonthly + calculateOnCallsMonth(onCall.get(i)));
-					teachers.get(teacher).setOnCallsWeek(currentWeekly + calculateOnCallsWeek(i, onCall,dayOfMonth));
+					teachers.get(teacher).setOnCallsWeek(currentWeekly + calculateOnCallsWeek(i, onCall,dayOfMonth,month));
 					teachers.get(teacher).setOnCallsTotal(currentTotal + calculateOnCallsTotal(i));
 				}
 		  }
@@ -110,13 +110,10 @@ public class ReadOnCallTally {
 	  }
 	  
 	  
-	  private static int calculateOnCallsWeek(int row, ArrayList<ArrayList<String>> tallies,int dayOfMonth){
+	  private static int calculateOnCallsWeek(int row, ArrayList<ArrayList<String>> tallies,int dayOfMonth, int month){
 		  int count=0;
 		  int column=0;
 		  int potentialPreviousMonth=0;
-
-		  //Calendar now = Calendar.getInstance();
-		  //int dayOfMonth = now.get(Calendar.DAY_OF_MONTH);
 
 		  String day = String.valueOf(dayOfMonth);
 		  
@@ -158,7 +155,7 @@ public class ReadOnCallTally {
 				  		  }
 
 				  		  try {
-				  			  int lastMonthSheet = getSheetByMonth()-1;
+				  			  int lastMonthSheet = getSheetByMonth(month-1);
 				  			  ArrayList<ArrayList<String>> lastMonth = readOnCallTally(lastMonthSheet);
 					  		  potentialPreviousMonth = getPreviousMonthWeekTally(lastMonth, row);
 				  		  }
@@ -177,10 +174,10 @@ public class ReadOnCallTally {
 	  }
 	  
 
-	  public static int getSheetByMonth() throws IOException, InvalidFormatException {
-		  int currentMonth=0;
+	  public static int getSheetByMonth(int monthInt) throws IOException, InvalidFormatException {
+		  int currentMonth=monthInt;
 		  Calendar cal = Calendar.getInstance();
-		  String month = new SimpleDateFormat("MMMM").format(cal.getTime());
+		  String month = new SimpleDateFormat("MMMM").format(monthInt);
 		  ArrayList<ArrayList<String>> temp;
 		  for(int i=0; i<=4; i++) {
 			  temp = readOnCallTally(i);

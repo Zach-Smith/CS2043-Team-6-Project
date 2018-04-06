@@ -280,7 +280,7 @@ public class Application {
 					
 					//Update on call counts
 					ArrayList<ArrayList<String>> onCallTally = ReadOnCallTally.readOnCallTally(tallySheet);
-					teachers = ReadOnCallTally.updateTeachersFromOnCall(onCallTally, teachers,day);
+					teachers = ReadOnCallTally.updateTeachersFromOnCall(onCallTally, teachers,day, month);
 					
 					//Create on calls from VP entered supply teachers
 					SupplyProcessor supplyProcessor = new SupplyProcessor(week);

@@ -123,7 +123,7 @@ public static int getCellValue(int year,int month,int day) {
 	
 }
 	
-private static void createNewRow(Workbook workbook, XSSFSheet sheet, int[] startCollumsPeriodes,String teacherName, String period,
+private static void createNewRow(Workbook workbook, XSSFSheet workSheet, int[] startCollumsPeriodes,String teacherName, String period,
 		int day, int templateRowIndex) {
 	int indexForNewRow = 0;
 	if (period.equals("Period 1")) {
@@ -137,18 +137,16 @@ private static void createNewRow(Workbook workbook, XSSFSheet sheet, int[] start
 	} else if (period.equals("Period 4")) {
 		indexForNewRow = templateRowIndex -2;
 	}
-	//Row templateRow = sheet.getRow(templateRowIndex);
-	sheet.shiftRows(indexForNewRow,sheet.getLastRowNum(),1);   
-	//Row newRow = sheet.createRow(indexForNewRow);
-	
-	copyRow(workbook,  sheet, templateRowIndex, indexForNewRow);
-	
-	sheet.getRow(indexForNewRow).getCell(STARTING_CELL).setCellValue(teacherName);
-	double newCellNumber =sheet.getRow(indexForNewRow-1).getCell(STARTING_CELL-1).getNumericCellValue()+1; 
-	sheet.getRow(indexForNewRow).getCell(STARTING_CELL-1).setCellValue(newCellNumber);
-	
-	//for (short currentCell = 0; currentCell < templateRow.getLastCellNum(); currentCell++) 
-	
+	for(int s = 0; s < 5; s++) {
+		Sheet sheet = workbook.getSheetAt(s);
+		sheet.shiftRows(indexForNewRow,sheet.getLastRowNum(),1);   
+		
+		copyRow(workbook,  sheet, templateRowIndex, indexForNewRow);
+		
+		sheet.getRow(indexForNewRow).getCell(STARTING_CELL).setCellValue(teacherName);
+		double newCellNumber =sheet.getRow(indexForNewRow-1).getCell(STARTING_CELL-1).getNumericCellValue()+1; 
+		sheet.getRow(indexForNewRow).getCell(STARTING_CELL-1).setCellValue(newCellNumber);
+}
 }
 
 private static void copyRow(Workbook workbook, Sheet worksheet, int templateRowIndex, int indexForNewRow) {
